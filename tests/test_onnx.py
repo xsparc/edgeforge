@@ -59,3 +59,44 @@ def test_external_tensor_data_rejected():
     entry.key, entry.value = "location", "private-weights.bin"
     with pytest.raises(EdgeForgeError):
         validate_onnx(graph.SerializeToString())
+
+
+def test_scalar_tensor_and_cli_accuracy_exit(tmp_path, monkeypatch, capsys):
+    import io
+
+    import numpy as np
+    from onnx import TensorProto, helper
+
+    from edgeforge.cli import main
+
+    graph = helper.make_graph(
+        [helper.make_node("Add", ["x", "x"], ["y"])],
+        "scalar",
+        [helper.make_tensor_value_info("x", TensorProto.FLOAT, [])],
+        [helper.make_tensor_value_info("y", TensorProto.FLOAT, [])],
+    )
+    model = helper.make_model(graph, opset_imports=[helper.make_opsetid("", 17)], ir_version=9)
+    config = ModelConfig(
+        runtime="onnx",
+        inputs=[{"name": "x", "dtype": "float32", "shape": []}],
+        outputs=[{"name": "y", "dtype": "float32", "shape": []}],
+    )
+    vectors = io.BytesIO()
+    np.savez(
+        vectors,
+        input__x=np.array([1, 2], dtype="float32"),
+        output__y=np.array([2, 4], dtype="float32"),
+    )
+    bundle = unpack(pack(model.SerializeToString(), vectors.getvalue(), config))
+    assert benchmark(bundle, BenchmarkOptions(iterations=1)).agreement["passed"] is True
+    wrong = io.BytesIO()
+    np.savez(
+        wrong,
+        input__x=np.array([1, 2], dtype="float32"),
+        output__y=np.array([0, 0], dtype="float32"),
+    )
+    path = tmp_path / "wrong.efb"
+    path.write_bytes(pack(model.SerializeToString(), wrong.getvalue(), config))
+    monkeypatch.setattr("sys.argv", ["edgeforge", "benchmark", str(path), "--iterations", "1"])
+    assert main() == 3
+    assert '"passed": false' in capsys.readouterr().out

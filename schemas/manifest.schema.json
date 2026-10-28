@@ -1,0 +1,194 @@
+{
+  "$defs": {
+    "Affine": {
+      "additionalProperties": false,
+      "properties": {
+        "offset": {
+          "default": 0.0,
+          "title": "Offset",
+          "type": "number"
+        },
+        "scale": {
+          "default": 1.0,
+          "title": "Scale",
+          "type": "number"
+        }
+      },
+      "title": "Affine",
+      "type": "object"
+    },
+    "Asset": {
+      "additionalProperties": false,
+      "properties": {
+        "sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        },
+        "size_bytes": {
+          "maximum": 536870912,
+          "minimum": 1,
+          "title": "Size Bytes",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "sha256",
+        "size_bytes"
+      ],
+      "title": "Asset",
+      "type": "object"
+    },
+    "ModelConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "inputs": {
+          "items": {
+            "$ref": "#/$defs/TensorSpec"
+          },
+          "maxItems": 32,
+          "minItems": 1,
+          "title": "Inputs",
+          "type": "array"
+        },
+        "outputs": {
+          "items": {
+            "$ref": "#/$defs/TensorSpec"
+          },
+          "maxItems": 32,
+          "minItems": 1,
+          "title": "Outputs",
+          "type": "array"
+        },
+        "preprocessing": {
+          "patternProperties": {
+            "^[A-Za-z][A-Za-z0-9_]{0,63}$": {
+              "$ref": "#/$defs/Affine"
+            }
+          },
+          "title": "Preprocessing",
+          "type": "object"
+        },
+        "provider": {
+          "default": "CPUExecutionProvider",
+          "maxLength": 80,
+          "minLength": 1,
+          "title": "Provider",
+          "type": "string"
+        },
+        "runtime": {
+          "enum": [
+            "onnx",
+            "executorch"
+          ],
+          "title": "Runtime",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": 1,
+          "default": 1,
+          "title": "Schema Version",
+          "type": "integer"
+        },
+        "threads": {
+          "default": 1,
+          "maximum": 64,
+          "minimum": 1,
+          "title": "Threads",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "runtime",
+        "inputs",
+        "outputs"
+      ],
+      "title": "ModelConfig",
+      "type": "object"
+    },
+    "TensorSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "dtype": {
+          "enum": [
+            "float32",
+            "float64",
+            "int32",
+            "int64",
+            "uint8",
+            "bool"
+          ],
+          "title": "Dtype",
+          "type": "string"
+        },
+        "name": {
+          "pattern": "^[A-Za-z][A-Za-z0-9_]{0,63}$",
+          "title": "Name",
+          "type": "string"
+        },
+        "shape": {
+          "items": {
+            "maximum": 1000000,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "maxItems": 8,
+          "title": "Shape",
+          "type": "array"
+        }
+      },
+      "required": [
+        "name",
+        "dtype",
+        "shape"
+      ],
+      "title": "TensorSpec",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "config": {
+      "$ref": "#/$defs/ModelConfig"
+    },
+    "model": {
+      "$ref": "#/$defs/Asset"
+    },
+    "producer_version": {
+      "default": "0.1.0",
+      "title": "Producer Version",
+      "type": "string"
+    },
+    "quantization": {
+      "default": "none",
+      "enum": [
+        "none",
+        "dynamic-int8"
+      ],
+      "title": "Quantization",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": 1,
+      "default": 1,
+      "title": "Schema Version",
+      "type": "integer"
+    },
+    "source_model_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Source Model Sha256",
+      "type": "string"
+    },
+    "vectors": {
+      "$ref": "#/$defs/Asset"
+    }
+  },
+  "required": [
+    "config",
+    "model",
+    "vectors",
+    "source_model_sha256"
+  ],
+  "title": "Manifest",
+  "type": "object"
+}

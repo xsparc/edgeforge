@@ -16,3 +16,6 @@ htmlcov/
 *.pte
 *.npz
 *.efb
+demo/
+registry.json
+report.json
