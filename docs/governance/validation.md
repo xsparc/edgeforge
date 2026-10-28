@@ -22,3 +22,17 @@ unchanged upstream check therefore cannot certify EdgeForge. EdgeForge owns a
 project-specific structural gate in `scripts/check_governance.py`; this checks
 traceability, repository-local references, approvals, statuses, and review dates.
 Both tool outcomes are distinguished in closeout evidence.
+
+## EF-002
+
+2026-10-28: 29 local tests passed, with one native ExecuTorch test skipped because
+the runtime is not installed in the Windows development environment. Real ONNX
+Runtime 1.31.1 CPU inference and dynamic INT8 MatMul quantization passed. Adapter
+contract coverage includes ExecuTorch program loading, positional tensors, and
+output conversion. Integer agreement preserves differences beyond float64's exact
+range. CLI example generation and a saved benchmark report completed successfully.
+Ruff and static/dated strict EdgeForge governance checks passed.
+
+The Linux CI job installs ExecuTorch and runs the real export/execution test. Its
+outcome is pending at this slice's initial publication. Physical accelerators,
+mobile devices, and target-specific delegates have not been tested.
