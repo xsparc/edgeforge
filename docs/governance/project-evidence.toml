@@ -76,7 +76,7 @@ risk_refs = ["docs/security.md"]
 [[work_items]]
 id = "EF-003"
 title = "HTTP interoperability and MVP integration"
-status = "in-progress"
+status = "verified"
 requirement_ids = ["REQ-SERVICE-INTEROPERABILITY"]
 roadmap_refs = ["docs/roadmap/implementation-roadmap.md"]
 approval_ref = "conversation:2026-10-28-edgeforge-three-pr-mvp"

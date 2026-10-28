@@ -58,3 +58,12 @@ static and dated strict governance, wheel/source build, installed CLI smoke test
 and archive privacy inspection passed. FastAPI's test client emits an upstream
 HTTPX deprecation warning; requests and assertions pass. Final service-branch
 platform CI is checked independently after publication.
+
+[Service CI run 40671376506](https://github.com/xsparc/edgeforge/actions/runs/40671376506)
+passed all seven jobs: core/ONNX/API tests, lint, schema drift, governance, and
+build checks on Windows/macOS/Linux with Python 3.11 and 3.12, plus native
+ExecuTorch export and execution on Linux. The initial lock excluded Python 3.11;
+regenerating from the minimum supported version added explicit NumPy version
+markers, and the full matrix passed. No model performance threshold is inferred
+from these functional tests. CI now runs once per PR update, with bounded job
+durations, and again on main after merge.
