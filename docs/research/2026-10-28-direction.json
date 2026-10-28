@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "baseline_commit": "c87350d",
+  "scanned_at": "2026-10-28",
+  "coverage": ["edge model deployment", "runtime APIs", "quantization", "accelerator portability", "service integration boundaries"],
+  "findings": [
+    {
+      "finding": "ONNX Runtime exposes execution providers behind a common inference session interface.",
+      "source_event_date": "undated living documentation, checked 2026-10-28",
+      "citations": ["https://onnxruntime.ai/docs/api/python/api_summary.html", "https://onnxruntime.ai/docs/execution-providers/"],
+      "confidence": "high",
+      "relevance": "MVP runtime and accelerator boundary",
+      "direction_alignment": "matches requested ONNX adapter",
+      "opportunity_or_risk": "Report provider registration without claiming every node is accelerated.",
+      "engineering_cost": "small adapter with provider checks and integration tests",
+      "disposition": "adopt",
+      "roadmap_delta": "none; confirms requested scope",
+      "verification_needed": "CPU integration now; physical accelerator tests later"
+    },
+    {
+      "finding": "ExecuTorch loads exported PTE programs and invokes methods through its Python runtime; exports are target-specific.",
+      "source_event_date": "undated living documentation, checked 2026-10-28",
+      "citations": ["https://docs.pytorch.org/executorch/stable/runtime-python-api-reference.html", "https://docs.pytorch.org/executorch/stable/using-executorch-export.html"],
+      "confidence": "high",
+      "relevance": "PyTorch export and on-device inference path",
+      "direction_alignment": "matches requested ExecuTorch adapter",
+      "opportunity_or_risk": "Do not imply that one compiled model runs on every accelerator.",
+      "engineering_cost": "adapter plus platform-specific integration job",
+      "disposition": "adopt",
+      "roadmap_delta": "none; pre-exported PTE is the initial boundary",
+      "verification_needed": "real Linux PTE export and execution; target device measurements deferred"
+    },
+    {
+      "finding": "Dynamic quantization is available through ONNX Runtime, but speed and numerical effects depend on model and hardware.",
+      "source_event_date": "undated living documentation, checked 2026-10-28",
+      "citations": ["https://onnxruntime.ai/docs/performance/model-optimizations/quantization.html"],
+      "confidence": "high",
+      "relevance": "MVP optimization and benchmark correctness",
+      "direction_alignment": "supports measured optimization rather than assumed improvement",
+      "opportunity_or_risk": "Retain the source hash and compare quantized outputs with golden vectors.",
+      "engineering_cost": "bounded transformation and numerical regression tests",
+      "disposition": "adopt",
+      "roadmap_delta": "none; dynamic INT8 first, static calibration deferred",
+      "verification_needed": "quantized MatMul fixture and tolerance-failure tests"
+    }
+  ],
+  "overall_recommendation": "Implement the requested toolkit with existing runtimes, immutable artifacts, and transport-independent contracts.",
+  "evidence_gaps": ["No physical-device measurements", "No claim about ExecuTorch organizational migration is needed", "No multi-tenant deployment validation"],
+  "authority": "Advisory research only; initial implementation is authorized by the MVP request."
+}
