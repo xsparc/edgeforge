@@ -59,6 +59,11 @@ not part of the CLI. `threads` must stay at 1; the report uses null because the
 compiled runtime's threading cannot be controlled by this adapter. Delegates are
 reported as `compiled-program`, without claiming which device executed nodes.
 
+The ExecuTorch extra includes a compatible PyTorch dependency explicitly:
+[ExecuTorch wheels do not bundle PyTorch](https://pypi.org/project/executorch/1.5.1/).
+The 1.5 release line uses [PyTorch 2.14](https://github.com/pytorch/executorch/blob/v1.5.1/.ci/docker/ci_commit_pins/pytorch.txt).
+CPU CI installs both from the PyTorch CPU index, with PyPI for other dependencies.
+
 Use one benchmark process per device, record power/thermal settings externally,
 and compare matching runtime versions and workloads. The MVP does not attest
 thermal state, power use, accelerator placement, or cross-device equivalence.
