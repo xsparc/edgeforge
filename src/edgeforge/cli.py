@@ -26,6 +26,13 @@ def parser() -> argparse.ArgumentParser:
     inspect.add_argument("bundle", type=Path)
     commands.add_parser("schema", help="Print the manifest JSON Schema")
     commands.add_parser("doctor", help="Report runtime versions and registered providers")
+    commands.add_parser("report-schema", help="Print the strict retained-report JSON Schema")
+    check = commands.add_parser("report-check", help="Validate a saved report without execution")
+    check.add_argument("report", type=Path)
+    check.add_argument("--bundle", type=Path, help="Also check source identity and declared counts")
+    export = commands.add_parser("report-csv", help="Export a validated report as UTF-8 CSV")
+    export.add_argument("report", type=Path)
+    export.add_argument("--output", type=Path)
     demo = commands.add_parser("example", help="Generate a small runnable ONNX example")
     demo.add_argument("directory", type=Path)
     bench = commands.add_parser("benchmark", help="Measure a bundle on this device")
@@ -43,6 +50,20 @@ def parser() -> argparse.ArgumentParser:
 
 
 def run(args: argparse.Namespace) -> dict:
+    if args.command in {"report-schema", "report-check"}:
+        from .reports import MAX_REPORT_BYTES, ReportEvidence, validate_report, verify_report_bundle
+
+        if args.command == "report-schema":
+            return ReportEvidence.model_json_schema()
+        report = validate_report(read_bounded(args.report, MAX_REPORT_BYTES))
+        if args.bundle:
+            verify_report_bundle(report, unpack(read_bounded(args.bundle, MAX_BUNDLE_BYTES)))
+        return {
+            "schema_version": 1,
+            "valid": True,
+            "bundle_checked": args.bundle is not None,
+            "interpretation": "local_consistency_not_measurement_attestation",
+        }
     if args.command == "serve":
         try:
             import uvicorn
@@ -121,6 +142,18 @@ def run(args: argparse.Namespace) -> dict:
 def main() -> int:
     args = parser().parse_args()
     try:
+        if args.command == "report-csv":
+            from .reports import MAX_REPORT_BYTES, render_report_csv, validate_report
+
+            output = render_report_csv(validate_report(read_bounded(args.report, MAX_REPORT_BYTES)))
+            if args.output:
+                with args.output.open("xb") as stream:
+                    stream.write(output.encode("utf-8"))
+            elif hasattr(sys.stdout, "buffer"):
+                sys.stdout.buffer.write(output.encode("utf-8"))
+            else:
+                print(output, end="")
+            return 0
         result = run(args)
         print(json.dumps(result, indent=2, allow_nan=False))
         return 3 if result.get("agreement", {}).get("passed") is False else 0

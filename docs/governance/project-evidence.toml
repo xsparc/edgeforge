@@ -1,6 +1,5 @@
 schema_version = 1
 project = "edgeforge"
-research_decisions = []
 
 [authority]
 source_priority = ["docs/architecture/overview.md", "docs/roadmap/implementation-roadmap.md", "docs/architecture/decisions/", "code-and-tests", "supporting-documentation"]
@@ -82,3 +81,31 @@ roadmap_refs = ["docs/roadmap/implementation-roadmap.md"]
 approval_ref = "conversation:2026-10-28-edgeforge-three-pr-mvp"
 acceptance_refs = ["docs/service.md", "docs/roadmap/implementation-roadmap.md"]
 evidence_refs = ["tests/test_service.py", "tests/test_governance.py", "docs/governance/validation.md"]
+
+[[research_decisions]]
+id = "RD-REPORT-REVIEW"
+disposition = "adopted"
+source_refs = ["docs/research/2026-10-29-report-review.md"]
+design_refs = ["docs/architecture/decisions/0002-retained-report-review.md"]
+
+[[requirements]]
+id = "REQ-REPORT-REVIEW"
+statement = "Retained benchmark report review with bounded inputs and explicit evidence scope."
+status = "implemented"
+objective_ids = ["OBJ-PORTABLE-INFERENCE"]
+roadmap_refs = ["docs/roadmap/implementation-roadmap.md"]
+design_refs = ["docs/architecture/decisions/0002-retained-report-review.md"]
+risk_refs = ["docs/report-review.md"]
+implementation_refs = ["src/edgeforge/reports.py","src/edgeforge/cli.py","schemas/report-evidence.schema.json"]
+verification_refs = ["tests/test_reports.py"]
+validation_refs = ["docs/governance/report-review-validation.md"]
+
+[[work_items]]
+id = "EF-004-REPORT-REVIEW"
+title = "Retained benchmark report review"
+status = "verified"
+requirement_ids = ["REQ-REPORT-REVIEW"]
+roadmap_refs = ["docs/roadmap/implementation-roadmap.md"]
+approval_ref = "conversation:2026-10-29-next-autonomous-milestone-and-draft-prs"
+acceptance_refs = ["docs/architecture/decisions/0002-retained-report-review.md"]
+evidence_refs = ["tests/test_reports.py","docs/governance/report-review-validation.md"]
