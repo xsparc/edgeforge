@@ -1,32 +1,27 @@
-# Next iteration: directional benchmark comparisons
+# Next iteration: retained comparison verification
 
-Status: planned handoff, 2026-10-29. EF-004 implements retained-report validation,
-schema export, bundle checks, CSV and the native synthetic workflow. The five
-items below are not implemented in that milestone.
+Status: planned handoff, 2026-10-31. EF-005 completes the
+[previous five tasks](governance/handoff-2026-10-29.md).
 
-1. **Comparison contract.** Define a closed version-1 before/after report model
-   with source report digests and signed latency, RSS and storage deltas.
-   Keep arithmetic finite and direction explicit; do not infer significance.
-2. **Compatibility assessment.** Classify differing bundles, options,
-   runtime/provider/thread settings and available platform descriptors with
-   fixed reasons. Withhold a performance verdict for incomparable evidence.
-   Matching descriptors do not prove identical hardware or measurement conditions.
-3. **Bounded comparison CLI and schema.** Compare two strictly validated retained
-   reports without inference execution. Preserve byte bounds, sanitized errors
-   and exclusive output; export the public comparison schema.
-4. **Comparison CSV.** Export direction, evidence identities, compatibility
-   reasons and metric deltas with prefixed labels and exact UTF-8/CRLF.
-   Test hostile labels, finite arithmetic, numeric round trips and no overwrite.
-5. **Comparison acceptance workflow.** Generate synthetic ONNX reports with
-   deliberately compatible and mismatched configurations, validate source
-   binding, exercise both comparison transports and test reversed direction.
-   No timing-based pass/fail or claim of quantization speedup.
+1. **Bounded comparison reader.** Add a public bytes reader with the comparison
+   limit and a read-only comparison-check CLI. Validate nested reports, digests,
+   compatibility and arithmetic with sanitized diagnostics and malformed fixtures.
+2. **Source-bound comparison verification.** Accept explicit before/after reports
+   and retained comparison JSON; recompute and require equality. Reject changed
+   snapshots, direction or normalized identities without repairing output.
+3. **Source-bound CSV verification.** Verify the exact canonical ten-row export
+   against two retained source reports. Enforce UTF-8/CRLF, text prefixes, row and
+   column order; reject missing, extra and tampered cells within byte limits.
+4. **Script-free HTML review.** Render compatible/incompatible state, fixed reasons,
+   source agreement, identities and signed metric tables with escaped text,
+   restrictive CSP and bounded exclusive output. Preserve descriptive-only scope.
+5. **Portable comparison-review acceptance.** Extend the synthetic native ONNX
+   workflow through retained JSON/CSV verification and HTML review; exercise
+   reversal, failed agreement and desktop/mobile layouts without timing gates.
 
-Priority: retained reports can now be checked and exported; comparison is the
-next local review step before any queued service, physical-device or deployment
-work. Review the strict reader's format against real retained reports first.
-
-EF-004 is stacked on MVP PR #3, which depends on #2 and #1. Check their merge
-state before selecting the next base. Keep each iteration's implementation,
-tests, current-date governance evidence and draft PR together. Merging, releases,
-deployment, paid execution and contacting people require separate authorization.
+Priority: comparison generation is now available; retained evidence needs an
+explicit independent checking workflow before any queued service or device work.
+EF-005 targets feat/service-interoperability while MVP PR #3 remains open above
+#2 and #1. Recheck merge state before branching and avoid duplicating merged work.
+These tasks are planned only; merge, release, deployment and paid execution
+remain outside the handoff.

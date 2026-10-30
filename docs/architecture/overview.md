@@ -66,3 +66,8 @@ workers before processing third-party models. See [security](../security.md).
 
 The strict ReportEvidence reader validates retained benchmark JSON. Offline commands expose its schema, check bundle identity and counts, and export portable CSV. A native synthetic workflow verifies the integration while preserving the benchmark producer/API contract.
 See [EF-004 decision](decisions/0002-retained-report-review.md) for compatibility, acceptance and limits.
+
+## Descriptive benchmark comparisons
+
+EF-005 adds bounded offline contracts and verification without changing runtime
+execution authority. See the [accepted decision](decisions/0003-benchmark-comparison.md) and its explicit evidence limits.

@@ -109,3 +109,31 @@ roadmap_refs = ["docs/roadmap/implementation-roadmap.md"]
 approval_ref = "conversation:2026-10-29-next-autonomous-milestone-and-draft-prs"
 acceptance_refs = ["docs/architecture/decisions/0002-retained-report-review.md"]
 evidence_refs = ["tests/test_reports.py","docs/governance/report-review-validation.md"]
+
+[[research_decisions]]
+id = "RD-BENCHMARK-COMPARISON"
+disposition = "adopted"
+source_refs = ["docs/research/2026-10-31-benchmark-comparison.md"]
+design_refs = ["docs/architecture/decisions/0003-benchmark-comparison.md"]
+
+[[requirements]]
+id = "REQ-BENCHMARK-COMPARISON"
+statement = "Descriptive benchmark comparisons with bounded input, explicit direction and limited evidence claims."
+status = "implemented"
+objective_ids = ["OBJ-PORTABLE-INFERENCE"]
+roadmap_refs = ["docs/roadmap/implementation-roadmap.md"]
+design_refs = ["docs/architecture/decisions/0003-benchmark-comparison.md"]
+risk_refs = ["docs/benchmark-comparison.md"]
+implementation_refs = ["src/edgeforge/comparison.py", "src/edgeforge/cli.py", "schemas/comparison.schema.json"]
+verification_refs = ["tests/test_comparison.py"]
+validation_refs = ["docs/governance/benchmark-comparison-validation.md"]
+
+[[work_items]]
+id = "EF-005-BENCHMARK-COMPARISON"
+title = "Descriptive benchmark comparisons"
+status = "verified"
+requirement_ids = ["REQ-BENCHMARK-COMPARISON"]
+roadmap_refs = ["docs/roadmap/implementation-roadmap.md"]
+approval_ref = "conversation:2026-10-31-next-autonomous-milestone-and-draft-prs"
+acceptance_refs = ["docs/architecture/decisions/0003-benchmark-comparison.md"]
+evidence_refs = ["tests/test_comparison.py", "docs/governance/benchmark-comparison-validation.md"]

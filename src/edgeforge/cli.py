@@ -27,6 +27,14 @@ def parser() -> argparse.ArgumentParser:
     commands.add_parser("schema", help="Print the manifest JSON Schema")
     commands.add_parser("doctor", help="Report runtime versions and registered providers")
     commands.add_parser("report-schema", help="Print the strict retained-report JSON Schema")
+    commands.add_parser("comparison-schema", help="Print the descriptive comparison JSON Schema")
+    compare = commands.add_parser(
+        "report-compare", help="Compare two retained reports without execution"
+    )
+    compare.add_argument("before", type=Path)
+    compare.add_argument("after", type=Path)
+    compare.add_argument("--format", choices=["json", "csv"], default="json")
+    compare.add_argument("--output", type=Path)
     check = commands.add_parser("report-check", help="Validate a saved report without execution")
     check.add_argument("report", type=Path)
     check.add_argument("--bundle", type=Path, help="Also check source identity and declared counts")
@@ -50,6 +58,10 @@ def parser() -> argparse.ArgumentParser:
 
 
 def run(args: argparse.Namespace) -> dict:
+    if args.command == "comparison-schema":
+        from .comparison import ReportComparison
+
+        return ReportComparison.model_json_schema()
     if args.command in {"report-schema", "report-check"}:
         from .reports import MAX_REPORT_BYTES, ReportEvidence, validate_report, verify_report_bundle
 
@@ -142,6 +154,29 @@ def run(args: argparse.Namespace) -> dict:
 def main() -> int:
     args = parser().parse_args()
     try:
+        if args.command == "report-compare":
+            from .comparison import MAX_COMPARISON_BYTES, compare_reports, render_comparison_csv
+            from .reports import MAX_REPORT_BYTES, validate_report
+
+            comparison = compare_reports(
+                validate_report(read_bounded(args.before, MAX_REPORT_BYTES)),
+                validate_report(read_bounded(args.after, MAX_REPORT_BYTES)),
+            )
+            output = (
+                render_comparison_csv(comparison)
+                if args.format == "csv"
+                else comparison.model_dump_json(indent=2) + "\n"
+            ).encode("utf-8")
+            if len(output) > MAX_COMPARISON_BYTES:
+                raise EdgeForgeError("comparison exceeds byte limit")
+            if args.output:
+                with args.output.open("xb") as stream:
+                    stream.write(output)
+            elif hasattr(sys.stdout, "buffer"):
+                sys.stdout.buffer.write(output)
+            else:
+                print(output.decode("utf-8"), end="")
+            return 0
         if args.command == "report-csv":
             from .reports import MAX_REPORT_BYTES, render_report_csv, validate_report
 
