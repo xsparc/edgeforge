@@ -12,26 +12,46 @@ def check(root: Path, as_of: date | None = None) -> list[str]:
     errors = []
     try:
         data = tomllib.loads((root / "docs/governance/project-evidence.toml").read_text("utf-8"))
-        assert data["schema_version"] == 1 and data["project"] == "edgeforge"
-        assert data["authority"]["dhf_is_authoritative"] is False
+        if not (data["schema_version"] == 1 and data["project"] == "edgeforge"):
+            raise ValueError("invalid registry")
+        if data["authority"]["dhf_is_authoritative"] is not False:
+            raise ValueError("invalid registry")
+        expected_priority = [
+            "docs/architecture/overview.md",
+            "docs/roadmap/implementation-roadmap.md",
+            "docs/architecture/decisions/",
+            "code-and-tests",
+            "supporting-documentation",
+        ]
+        if data["authority"]["source_priority"] != expected_priority:
+            raise ValueError("invalid authority order")
         reviewed = date.fromisoformat(data["review"]["last_reviewed"])
         due = date.fromisoformat(data["review"]["review_due"])
-        assert reviewed <= due
+        if not reviewed <= due:
+            raise ValueError("invalid registry")
         if as_of and as_of > due:
             errors.append("review.overdue")
         objectives = {r["id"] for r in data["objectives"]}
         requirements = {r["id"] for r in data["requirements"]}
+        if not objectives or not requirements or not data["work_items"]:
+            raise ValueError("missing evidence records")
         seen = set()
         design_refs = set()
         for kind in ("objectives", "requirements", "work_items", "research_decisions"):
             for record in data[kind]:
                 identity = record["id"]
-                assert re.fullmatch(r"[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+", identity)
-                assert identity not in seen
+                if not re.fullmatch("[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+", identity):
+                    raise ValueError("invalid registry")
+                if identity in seen:
+                    raise ValueError("invalid registry")
                 seen.add(identity)
                 if kind == "requirements":
-                    assert set(record["objective_ids"]) <= objectives
-                    assert record["status"] in {"planned", "implemented", "deferred", "retired"}
+                    if not record["objective_ids"]:
+                        raise ValueError("missing objective link")
+                    if not set(record["objective_ids"]) <= objectives:
+                        raise ValueError("invalid registry")
+                    if record["status"] not in {"planned", "implemented", "deferred", "retired"}:
+                        raise ValueError("invalid registry")
                     fields = ["roadmap_refs", "design_refs"]
                     if record["status"] == "implemented":
                         fields += [
@@ -40,40 +60,55 @@ def check(root: Path, as_of: date | None = None) -> list[str]:
                             "validation_refs",
                             "risk_refs",
                         ]
-                    assert all(record.get(f) for f in fields)
+                    if not all(record.get(f) for f in fields):
+                        raise ValueError("invalid registry")
                     design_refs.update(record["design_refs"])
                     if record["status"] == "deferred":
-                        assert record["deferral_reason"] and record["reconsideration_trigger"]
+                        if not (record["deferral_reason"] and record["reconsideration_trigger"]):
+                            raise ValueError("invalid registry")
                 if kind == "work_items":
-                    assert set(record["requirement_ids"]) <= requirements
-                    assert record["status"] in {
+                    if not record["requirement_ids"]:
+                        raise ValueError("missing requirement link")
+                    if not set(record["requirement_ids"]) <= requirements:
+                        raise ValueError("invalid registry")
+                    if record["status"] not in {
                         "proposed",
                         "approved",
                         "in-progress",
                         "verified",
                         "closed",
                         "blocked",
-                    }
-                    assert record["acceptance_refs"] and record["roadmap_refs"]
+                    }:
+                        raise ValueError("invalid registry")
+                    if not (record["acceptance_refs"] and record["roadmap_refs"]):
+                        raise ValueError("invalid registry")
                     if record["status"] in {"approved", "in-progress", "verified", "closed"}:
-                        assert re.fullmatch(
-                            r"conversation:\d{4}-\d{2}-\d{2}-[a-z0-9-]+", record["approval_ref"]
-                        )
+                        if not re.fullmatch(
+                            "conversation:\\d{4}-\\d{2}-\\d{2}-[a-z0-9-]+", record["approval_ref"]
+                        ):
+                            raise ValueError("invalid registry")
                     if record["status"] in {"verified", "closed"}:
-                        assert record["evidence_refs"]
+                        if not record["evidence_refs"]:
+                            raise ValueError("invalid registry")
                 for key, refs in record.items():
                     if not key.endswith("_refs"):
                         continue
                     for ref in refs:
                         path = PurePosixPath(ref)
-                        assert not path.is_absolute() and ".." not in path.parts
-                        assert ":" not in ref and "\\" not in ref and ".agents" not in path.parts
+                        if not (not path.is_absolute() and ".." not in path.parts):
+                            raise ValueError("invalid registry")
+                        if not (
+                            ":" not in ref and "\\" not in ref and (".agents" not in path.parts)
+                        ):
+                            raise ValueError("invalid registry")
                         target = (root / ref).resolve()
-                        assert target.is_relative_to(root.resolve()) and target.is_file()
+                        if not (target.is_relative_to(root.resolve()) and target.is_file()):
+                            raise ValueError("invalid registry")
         for adr in (root / "docs/architecture/decisions").glob("*.md"):
             if "Status: accepted" in adr.read_text("utf-8"):
-                assert adr.relative_to(root).as_posix() in design_refs
-    except (OSError, ValueError, KeyError, TypeError, AssertionError):
+                if adr.relative_to(root).as_posix() not in design_refs:
+                    raise ValueError("invalid registry")
+    except (OSError, ValueError, KeyError, TypeError):
         errors.append("registry.invalid")
     return errors
 

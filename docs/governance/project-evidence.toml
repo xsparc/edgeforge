@@ -1,6 +1,5 @@
 schema_version = 1
 project = "edgeforge"
-research_decisions = []
 
 [authority]
 source_priority = ["docs/architecture/overview.md", "docs/roadmap/implementation-roadmap.md", "docs/architecture/decisions/", "code-and-tests", "supporting-documentation"]
@@ -54,9 +53,87 @@ risk_refs = ["docs/security.md"]
 [[work_items]]
 id = "EF-002"
 title = "Runtime adapters and scoped benchmarks"
-status = "in-progress"
+status = "verified"
 requirement_ids = ["REQ-RUNTIME-BENCHMARKS"]
 roadmap_refs = ["docs/roadmap/implementation-roadmap.md"]
 approval_ref = "conversation:2026-10-28-edgeforge-three-pr-mvp"
 acceptance_refs = ["docs/roadmap/implementation-roadmap.md"]
 evidence_refs = ["tests/test_onnx.py", "tests/test_executorch.py", "tests/test_benchmark.py"]
+
+[[requirements]]
+id = "REQ-SERVICE-INTEROPERABILITY"
+statement = "Expose shared contracts through a bounded authenticated service for registered bundles."
+status = "implemented"
+objective_ids = ["OBJ-PORTABLE-INFERENCE"]
+roadmap_refs = ["docs/roadmap/implementation-roadmap.md"]
+design_refs = ["docs/architecture/decisions/0001-runtime-adapters.md"]
+implementation_refs = ["src/edgeforge/service.py", "schemas/openapi.json", "requirements/onnx-api.txt"]
+verification_refs = ["tests/test_service.py", "tests/test_governance.py", ".github/workflows/ci.yml"]
+validation_refs = ["docs/governance/validation.md", "docs/service.md"]
+risk_refs = ["docs/security.md"]
+
+[[work_items]]
+id = "EF-003"
+title = "HTTP interoperability and MVP integration"
+status = "verified"
+requirement_ids = ["REQ-SERVICE-INTEROPERABILITY"]
+roadmap_refs = ["docs/roadmap/implementation-roadmap.md"]
+approval_ref = "conversation:2026-10-28-edgeforge-three-pr-mvp"
+acceptance_refs = ["docs/service.md", "docs/roadmap/implementation-roadmap.md"]
+evidence_refs = ["tests/test_service.py", "tests/test_governance.py", "docs/governance/validation.md"]
+
+[[research_decisions]]
+id = "RD-REPORT-REVIEW"
+disposition = "adopted"
+source_refs = ["docs/research/2026-10-29-report-review.md"]
+design_refs = ["docs/architecture/decisions/0002-retained-report-review.md"]
+
+[[requirements]]
+id = "REQ-REPORT-REVIEW"
+statement = "Retained benchmark report review with bounded inputs and explicit evidence scope."
+status = "implemented"
+objective_ids = ["OBJ-PORTABLE-INFERENCE"]
+roadmap_refs = ["docs/roadmap/implementation-roadmap.md"]
+design_refs = ["docs/architecture/decisions/0002-retained-report-review.md"]
+risk_refs = ["docs/report-review.md"]
+implementation_refs = ["src/edgeforge/reports.py","src/edgeforge/cli.py","schemas/report-evidence.schema.json"]
+verification_refs = ["tests/test_reports.py"]
+validation_refs = ["docs/governance/report-review-validation.md"]
+
+[[work_items]]
+id = "EF-004-REPORT-REVIEW"
+title = "Retained benchmark report review"
+status = "verified"
+requirement_ids = ["REQ-REPORT-REVIEW"]
+roadmap_refs = ["docs/roadmap/implementation-roadmap.md"]
+approval_ref = "conversation:2026-10-29-next-autonomous-milestone-and-draft-prs"
+acceptance_refs = ["docs/architecture/decisions/0002-retained-report-review.md"]
+evidence_refs = ["tests/test_reports.py","docs/governance/report-review-validation.md"]
+
+[[research_decisions]]
+id = "RD-BENCHMARK-COMPARISON"
+disposition = "adopted"
+source_refs = ["docs/research/2026-10-31-benchmark-comparison.md"]
+design_refs = ["docs/architecture/decisions/0003-benchmark-comparison.md"]
+
+[[requirements]]
+id = "REQ-BENCHMARK-COMPARISON"
+statement = "Descriptive benchmark comparisons with bounded input, explicit direction and limited evidence claims."
+status = "implemented"
+objective_ids = ["OBJ-PORTABLE-INFERENCE"]
+roadmap_refs = ["docs/roadmap/implementation-roadmap.md"]
+design_refs = ["docs/architecture/decisions/0003-benchmark-comparison.md"]
+risk_refs = ["docs/benchmark-comparison.md"]
+implementation_refs = ["src/edgeforge/comparison.py", "src/edgeforge/cli.py", "schemas/comparison.schema.json"]
+verification_refs = ["tests/test_comparison.py"]
+validation_refs = ["docs/governance/benchmark-comparison-validation.md"]
+
+[[work_items]]
+id = "EF-005-BENCHMARK-COMPARISON"
+title = "Descriptive benchmark comparisons"
+status = "verified"
+requirement_ids = ["REQ-BENCHMARK-COMPARISON"]
+roadmap_refs = ["docs/roadmap/implementation-roadmap.md"]
+approval_ref = "conversation:2026-10-31-next-autonomous-milestone-and-draft-prs"
+acceptance_refs = ["docs/architecture/decisions/0003-benchmark-comparison.md"]
+evidence_refs = ["tests/test_comparison.py", "docs/governance/benchmark-comparison-validation.md"]

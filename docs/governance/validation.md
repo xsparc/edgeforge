@@ -33,6 +33,37 @@ output conversion. Integer agreement preserves differences beyond float64's exac
 range. CLI example generation and a saved benchmark report completed successfully.
 Ruff and static/dated strict EdgeForge governance checks passed.
 
-The Linux CI job installs ExecuTorch and runs the real export/execution test. Its
-outcome is pending at this slice's initial publication. Physical accelerators,
-mobile devices, and target-specific delegates have not been tested.
+The initial Linux job identified a missing PyTorch dependency. The corrected
+environment installs compatible PyTorch and ExecuTorch CPU wheels.
+[CI run 40669872522](https://github.com/xsparc/edgeforge/actions/runs/40669872522)
+passed all six core platform/Python jobs and both ExecuTorch tests, including
+real PyTorch export, PTE loading, and execution. Physical accelerators, mobile
+devices, and target-specific delegates have not been tested.
+
+## EF-003
+
+The HTTP integration tests cover bearer authentication, OpenAPI security metadata,
+registered bundle hashes, native ONNX measurement, invalid and oversized requests,
+changed artifacts, sanitized native failures, worker release, and concurrent-call
+backpressure. Governance regression tests verify stale evidence, unknown status,
+missing references, and path traversal, including under optimized Python.
+
+The ONNX/API dependency set is pinned with hashes and cross-platform markers.
+The wheel and source distribution build successfully. Final integration also
+checks scalar tensor preservation and the CLI's accuracy-failure exit code.
+
+2026-10-28 local closeout: 47 tests passed and one native ExecuTorch test was
+skipped locally (covered by the passing Linux CI job above). Ruff lint and format,
+static and dated strict governance, wheel/source build, installed CLI smoke test,
+and archive privacy inspection passed. FastAPI's test client emits an upstream
+HTTPX deprecation warning; requests and assertions pass. Final service-branch
+platform CI is checked independently after publication.
+
+[Service CI run 40671376506](https://github.com/xsparc/edgeforge/actions/runs/40671376506)
+passed all seven jobs: core/ONNX/API tests, lint, schema drift, governance, and
+build checks on Windows/macOS/Linux with Python 3.11 and 3.12, plus native
+ExecuTorch export and execution on Linux. The initial lock excluded Python 3.11;
+regenerating from the minimum supported version added explicit NumPy version
+markers, and the full matrix passed. No model performance threshold is inferred
+from these functional tests. CI now runs once per PR update, with bounded job
+durations, and again on main after merge.
