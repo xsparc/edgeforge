@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 
 from edgeforge.benchmark import BenchmarkReport
+from edgeforge.comparison import ReportComparison
 from edgeforge.contracts import Manifest
 from edgeforge.reports import ReportEvidence
 from edgeforge.service import create_app
@@ -16,6 +17,7 @@ def main():
         "manifest.schema.json": Manifest.model_json_schema(),
         "report.schema.json": BenchmarkReport.model_json_schema(),
         "report-evidence.schema.json": ReportEvidence.model_json_schema(),
+        "comparison.schema.json": ReportComparison.model_json_schema(),
         "openapi.json": create_app({}, "schema-generation-only-" + "x" * 32).openapi(),
     }
     for name, schema in schemas.items():

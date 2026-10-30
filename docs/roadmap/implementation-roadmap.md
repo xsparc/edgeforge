@@ -26,3 +26,9 @@ Initialize five report-review tasks: strict intake, reader schema, retained bund
 Decision: docs/architecture/decisions/0002-retained-report-review.md.
 Acceptance: Strict report schema and arithmetic; bounded read-only checks; bundle/configuration/count matching; safe CSV and real synthetic ONNX workflow.
 Next iteration: docs/next-milestone.md (planned only).
+
+## EF-005: Descriptive benchmark comparisons
+
+Implemented the saved 2026-10-29 handoff. Decision: `docs/architecture/decisions/0003-benchmark-comparison.md`.
+Acceptance and limitations: `docs/governance/benchmark-comparison-validation.md`.
+Next five tasks: `docs/next-milestone.md` (planned only).

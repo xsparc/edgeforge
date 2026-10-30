@@ -68,3 +68,5 @@ sync with `python scripts/export_schemas.py`. OpenSteward stewardship follows th
 project instructions and evidence registry; merges and releases require review.
 
 MIT licensed. Model and runtime licenses remain separate.
+
+See [benchmark comparison](docs/benchmark-comparison.md) for the latest offline review workflow and evidence limits.
