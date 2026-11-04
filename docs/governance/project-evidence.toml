@@ -137,3 +137,31 @@ roadmap_refs = ["docs/roadmap/implementation-roadmap.md"]
 approval_ref = "conversation:2026-10-31-next-autonomous-milestone-and-draft-prs"
 acceptance_refs = ["docs/architecture/decisions/0003-benchmark-comparison.md"]
 evidence_refs = ["tests/test_comparison.py", "docs/governance/benchmark-comparison-validation.md"]
+
+[[research_decisions]]
+id = "RD-COMPARISON-REVIEW"
+disposition = "adopted"
+source_refs = ["docs/research/2026-11-04-comparison-review.md"]
+design_refs = ["docs/architecture/decisions/0004-comparison-review.md"]
+
+[[requirements]]
+id = "REQ-COMPARISON-REVIEW"
+statement = "Retained comparison review with bounded input, closed contracts and limited evidence claims."
+status = "implemented"
+objective_ids = ["OBJ-PORTABLE-INFERENCE"]
+roadmap_refs = ["docs/roadmap/implementation-roadmap.md"]
+design_refs = ["docs/architecture/decisions/0004-comparison-review.md"]
+risk_refs = ["docs/comparison-review.md"]
+implementation_refs = ["src/edgeforge/comparison_review.py", "src/edgeforge/cli.py"]
+verification_refs = ["tests/test_comparison_review.py"]
+validation_refs = ["docs/governance/comparison-review-validation.md"]
+
+[[work_items]]
+id = "EF-006-COMPARISON-REVIEW"
+title = "Retained comparison review"
+status = "verified"
+requirement_ids = ["REQ-COMPARISON-REVIEW"]
+roadmap_refs = ["docs/roadmap/implementation-roadmap.md"]
+approval_ref = "conversation:2026-11-04-next-autonomous-milestone-and-draft-prs"
+acceptance_refs = ["docs/architecture/decisions/0004-comparison-review.md"]
+evidence_refs = ["tests/test_comparison_review.py", "docs/governance/comparison-review-validation.md"]

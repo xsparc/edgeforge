@@ -28,6 +28,20 @@ def parser() -> argparse.ArgumentParser:
     commands.add_parser("doctor", help="Report runtime versions and registered providers")
     commands.add_parser("report-schema", help="Print the strict retained-report JSON Schema")
     commands.add_parser("comparison-schema", help="Print the descriptive comparison JSON Schema")
+    retained = commands.add_parser(
+        "comparison-check", help="Check a retained comparison without execution"
+    )
+    retained.add_argument("comparison", type=Path)
+    verify = commands.add_parser(
+        "comparison-verify", help="Verify a comparison against two reports"
+    )
+    verify.add_argument("before", type=Path)
+    verify.add_argument("after", type=Path)
+    verify.add_argument("comparison", type=Path)
+    verify.add_argument("--format", choices=["json", "csv"], default="json")
+    render = commands.add_parser("comparison-html", help="Render a checked retained comparison")
+    render.add_argument("comparison", type=Path)
+    render.add_argument("--output", required=True, type=Path)
     compare = commands.add_parser(
         "report-compare", help="Compare two retained reports without execution"
     )
@@ -154,6 +168,50 @@ def run(args: argparse.Namespace) -> dict:
 def main() -> int:
     args = parser().parse_args()
     try:
+        if args.command in {"comparison-check", "comparison-verify", "comparison-html"}:
+            from .comparison import MAX_COMPARISON_BYTES
+            from .comparison_review import (
+                read_comparison,
+                read_source,
+                render_comparison_html,
+                verify_comparison,
+            )
+            from .reports import MAX_REPORT_BYTES
+
+            raw = read_bounded(args.comparison, MAX_COMPARISON_BYTES)
+            if args.command == "comparison-verify":
+                verify_comparison(
+                    read_source(read_bounded(args.before, MAX_REPORT_BYTES)),
+                    read_source(read_bounded(args.after, MAX_REPORT_BYTES)),
+                    raw,
+                    format=args.format,
+                )
+                print(
+                    json.dumps(
+                        {
+                            "schema_version": 1,
+                            "verified": True,
+                            "interpretation": "local_source_consistency_only",
+                        }
+                    )
+                )
+            else:
+                comparison = read_comparison(raw)
+                if args.command == "comparison-html":
+                    output = render_comparison_html(comparison).encode("utf-8")
+                    with args.output.open("xb") as stream:
+                        stream.write(output)
+                else:
+                    print(
+                        json.dumps(
+                            {
+                                "schema_version": 1,
+                                "valid": True,
+                                "interpretation": "local_consistency_only",
+                            }
+                        )
+                    )
+            return 0
         if args.command == "report-compare":
             from .comparison import MAX_COMPARISON_BYTES, compare_reports, render_comparison_csv
             from .reports import MAX_REPORT_BYTES, validate_report
