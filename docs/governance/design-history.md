@@ -14,3 +14,7 @@ Raised the optional ONNX minimum to 1.22 to exclude affected versions described
 in four ONNX advisories; retained the patched 1.23.2 lock. Validation and limits:
 `docs/governance/2026-11-02-dependency-validation.md`. Architecture, runtime
 selection, and the planned next milestone are unchanged.
+
+## 2026-11-04: EF-006
+
+Retained comparison review: `docs/architecture/decisions/0004-comparison-review.md`; verification `docs/governance/comparison-review-validation.md`.

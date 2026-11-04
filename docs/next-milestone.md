@@ -1,27 +1,26 @@
-# Next iteration: retained comparison verification
+# Next iteration: portable comparison evidence
 
-Status: planned handoff, 2026-10-31. EF-005 completes the
-[previous five tasks](governance/handoff-2026-10-29.md).
+Status: planned handoff, 2026-11-04. EF-006 completes the
+[previous five tasks](governance/handoff-2026-10-31.md).
 
-1. **Bounded comparison reader.** Add a public bytes reader with the comparison
-   limit and a read-only comparison-check CLI. Validate nested reports, digests,
-   compatibility and arithmetic with sanitized diagnostics and malformed fixtures.
-2. **Source-bound comparison verification.** Accept explicit before/after reports
-   and retained comparison JSON; recompute and require equality. Reject changed
-   snapshots, direction or normalized identities without repairing output.
-3. **Source-bound CSV verification.** Verify the exact canonical ten-row export
-   against two retained source reports. Enforce UTF-8/CRLF, text prefixes, row and
-   column order; reject missing, extra and tampered cells within byte limits.
-4. **Script-free HTML review.** Render compatible/incompatible state, fixed reasons,
-   source agreement, identities and signed metric tables with escaped text,
-   restrictive CSP and bounded exclusive output. Preserve descriptive-only scope.
-5. **Portable comparison-review acceptance.** Extend the synthetic native ONNX
-   workflow through retained JSON/CSV verification and HTML review; exercise
-   reversal, failed agreement and desktop/mobile layouts without timing gates.
+1. **Canonical comparison export.** Define deterministic normalized JSON for a
+   validated comparison, including version and byte-limit rules. Preserve source
+   report digests and reject mutated SDK objects before output.
+2. **Retained evidence identity.** Publish a digest of the canonical comparison
+   encoding for external retention. Distinguish original-file bytes and source
+   report digests; make no signature or attestation claim.
+3. **Exclusive canonical export CLI.** Validate retained evidence and export
+   canonical bytes without overwrite, with a fixed identity summary. Test
+   equivalent formatting, invalid versions, collisions and byte limits.
+4. **Expected-identity verification.** Check a retained comparison against an
+   explicit expected digest before review/export. Keep internal and source
+   consistency checks separate; never retrieve embedded paths or URLs.
+5. **Portable retention acceptance.** Extend the synthetic workflow through
+   canonical export, expected-digest checks and source verification, including
+   consistent replacement, reversed direction and changed failed agreement.
+   Preserve descriptive-only performance interpretation.
 
-Priority: comparison generation is now available; retained evidence needs an
-explicit independent checking workflow before any queued service or device work.
-EF-005 targets feat/service-interoperability while MVP PR #3 remains open above
-#2 and #1. Recheck merge state before branching and avoid duplicating merged work.
-These tasks are planned only; merge, release, deployment and paid execution
-remain outside the handoff.
+Priority: independent comparison checking now works; canonical retention makes
+it portable without signing or remote infrastructure. PR #3 is merged into
+feat/runtime-benchmarks; #2 and #1 remain open. Recheck the stack before branching
+and use its merged base. These tasks are planned only; no merge/release/deployment.

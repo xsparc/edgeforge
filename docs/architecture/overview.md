@@ -71,3 +71,8 @@ See [EF-004 decision](decisions/0002-retained-report-review.md) for compatibilit
 
 EF-005 adds bounded offline contracts and verification without changing runtime
 execution authority. See the [accepted decision](decisions/0003-benchmark-comparison.md) and its explicit evidence limits.
+
+## Retained comparison review
+
+EF-006 validates retained evidence and compares it with explicit sources without
+execution. See [the accepted decision](decisions/0004-comparison-review.md).

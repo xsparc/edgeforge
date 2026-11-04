@@ -70,3 +70,5 @@ project instructions and evidence registry; merges and releases require review.
 MIT licensed. Model and runtime licenses remain separate.
 
 See [benchmark comparison](docs/benchmark-comparison.md) for the latest offline review workflow and evidence limits.
+
+See [retained comparison review](docs/comparison-review.md) for retained evidence checks and their limits.

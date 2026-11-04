@@ -32,3 +32,8 @@ Next iteration: docs/next-milestone.md (planned only).
 Implemented the saved 2026-10-29 handoff. Decision: `docs/architecture/decisions/0003-benchmark-comparison.md`.
 Acceptance and limitations: `docs/governance/benchmark-comparison-validation.md`.
 Next five tasks: `docs/next-milestone.md` (planned only).
+
+## EF-006: Retained comparison review
+
+Implements the retained handoff from 2026-10-31. Design: `docs/architecture/decisions/0004-comparison-review.md`.
+Acceptance: `docs/governance/comparison-review-validation.md`. Next tasks: `docs/next-milestone.md`.
