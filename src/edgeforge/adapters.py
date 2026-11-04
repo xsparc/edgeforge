@@ -122,7 +122,8 @@ class ExecuTorchAdapter:
     def run(self, inputs: dict[str, np.ndarray]) -> dict[str, np.ndarray]:
         try:
             tensors = [
-                self.torch.from_numpy(np.ascontiguousarray(inputs[n]).copy()) for n in self.inputs
+                self.torch.from_numpy(np.array(inputs[n], copy=True, order="C"))
+                for n in self.inputs
             ]
             outputs = self.method.execute(tensors)
             return {

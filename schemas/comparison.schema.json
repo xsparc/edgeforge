@@ -1,0 +1,640 @@
+{
+  "$defs": {
+    "Agreement": {
+      "additionalProperties": false,
+      "properties": {
+        "elements_compared": {
+          "minimum": 1,
+          "title": "Elements Compared",
+          "type": "integer"
+        },
+        "elements_matching": {
+          "minimum": 0,
+          "title": "Elements Matching",
+          "type": "integer"
+        },
+        "finite": {
+          "title": "Finite",
+          "type": "boolean"
+        },
+        "fraction_matching": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Fraction Matching",
+          "type": "number"
+        },
+        "max_abs_error": {
+          "minimum": 0,
+          "title": "Max Abs Error",
+          "type": "number"
+        },
+        "passed": {
+          "title": "Passed",
+          "type": "boolean"
+        },
+        "scope": {
+          "const": "golden-output numerical agreement; not task-level accuracy",
+          "title": "Scope",
+          "type": "string"
+        }
+      },
+      "required": [
+        "passed",
+        "finite",
+        "elements_compared",
+        "elements_matching",
+        "fraction_matching",
+        "max_abs_error",
+        "scope"
+      ],
+      "title": "Agreement",
+      "type": "object"
+    },
+    "BenchmarkOptions": {
+      "additionalProperties": false,
+      "properties": {
+        "atol": {
+          "default": 1e-05,
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Atol",
+          "type": "number"
+        },
+        "iterations": {
+          "default": 50,
+          "maximum": 10000,
+          "minimum": 1,
+          "title": "Iterations",
+          "type": "integer"
+        },
+        "rtol": {
+          "default": 0.0001,
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Rtol",
+          "type": "number"
+        },
+        "warmup": {
+          "default": 5,
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Warmup",
+          "type": "integer"
+        }
+      },
+      "title": "BenchmarkOptions",
+      "type": "object"
+    },
+    "Device": {
+      "additionalProperties": false,
+      "properties": {
+        "accelerator_verification": {
+          "const": "not-probed",
+          "title": "Accelerator Verification",
+          "type": "string"
+        },
+        "architecture": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Architecture",
+          "type": "string"
+        },
+        "logical_cpus": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Logical Cpus"
+        },
+        "onnx_registered_providers": {
+          "items": {
+            "maxLength": 200,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 64,
+          "title": "Onnx Registered Providers",
+          "type": "array"
+        },
+        "os": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Os",
+          "type": "string"
+        },
+        "packages": {
+          "$ref": "#/$defs/Packages"
+        },
+        "python": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Python",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": 1,
+          "title": "Schema Version",
+          "type": "integer"
+        },
+        "system_ram_bytes": {
+          "minimum": 0,
+          "title": "System Ram Bytes",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "schema_version",
+        "os",
+        "architecture",
+        "python",
+        "logical_cpus",
+        "system_ram_bytes",
+        "packages",
+        "onnx_registered_providers",
+        "accelerator_verification"
+      ],
+      "title": "Device",
+      "type": "object"
+    },
+    "Latency": {
+      "additionalProperties": false,
+      "properties": {
+        "max": {
+          "minimum": 0,
+          "title": "Max",
+          "type": "number"
+        },
+        "mean": {
+          "minimum": 0,
+          "title": "Mean",
+          "type": "number"
+        },
+        "min": {
+          "minimum": 0,
+          "title": "Min",
+          "type": "number"
+        },
+        "p50": {
+          "minimum": 0,
+          "title": "P50",
+          "type": "number"
+        },
+        "p95": {
+          "minimum": 0,
+          "title": "P95",
+          "type": "number"
+        }
+      },
+      "required": [
+        "min",
+        "mean",
+        "p50",
+        "p95",
+        "max"
+      ],
+      "title": "Latency",
+      "type": "object"
+    },
+    "LatencyDelta": {
+      "additionalProperties": false,
+      "properties": {
+        "max": {
+          "title": "Max",
+          "type": "number"
+        },
+        "mean": {
+          "title": "Mean",
+          "type": "number"
+        },
+        "min": {
+          "title": "Min",
+          "type": "number"
+        },
+        "p50": {
+          "title": "P50",
+          "type": "number"
+        },
+        "p95": {
+          "title": "P95",
+          "type": "number"
+        }
+      },
+      "required": [
+        "min",
+        "mean",
+        "p50",
+        "p95",
+        "max"
+      ],
+      "title": "LatencyDelta",
+      "type": "object"
+    },
+    "Memory": {
+      "additionalProperties": false,
+      "properties": {
+        "rss_before_load_bytes": {
+          "minimum": 0,
+          "title": "Rss Before Load Bytes",
+          "type": "integer"
+        },
+        "rss_sampled_increase_bytes": {
+          "minimum": 0,
+          "title": "Rss Sampled Increase Bytes",
+          "type": "integer"
+        },
+        "rss_sampled_peak_bytes": {
+          "minimum": 0,
+          "title": "Rss Sampled Peak Bytes",
+          "type": "integer"
+        },
+        "scope": {
+          "const": "whole-process RSS sampled after load and inference; not device VRAM",
+          "title": "Scope",
+          "type": "string"
+        }
+      },
+      "required": [
+        "rss_before_load_bytes",
+        "rss_sampled_peak_bytes",
+        "rss_sampled_increase_bytes",
+        "scope"
+      ],
+      "title": "Memory",
+      "type": "object"
+    },
+    "MemoryDelta": {
+      "additionalProperties": false,
+      "properties": {
+        "rss_before_load_bytes": {
+          "title": "Rss Before Load Bytes",
+          "type": "integer"
+        },
+        "rss_sampled_increase_bytes": {
+          "title": "Rss Sampled Increase Bytes",
+          "type": "integer"
+        },
+        "rss_sampled_peak_bytes": {
+          "title": "Rss Sampled Peak Bytes",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "rss_before_load_bytes",
+        "rss_sampled_peak_bytes",
+        "rss_sampled_increase_bytes"
+      ],
+      "title": "MemoryDelta",
+      "type": "object"
+    },
+    "Packages": {
+      "additionalProperties": false,
+      "properties": {
+        "executorch": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Executorch"
+        },
+        "numpy": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Numpy"
+        },
+        "onnx": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Onnx"
+        },
+        "onnxruntime": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Onnxruntime"
+        },
+        "psutil": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Psutil"
+        },
+        "torch": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Torch"
+        }
+      },
+      "required": [
+        "numpy",
+        "onnxruntime",
+        "onnx",
+        "executorch",
+        "torch",
+        "psutil"
+      ],
+      "title": "Packages",
+      "type": "object"
+    },
+    "ReportEvidence": {
+      "additionalProperties": false,
+      "description": "Strict reader for the existing v1 wire format; benchmark output is unchanged.",
+      "properties": {
+        "active_providers": {
+          "items": {
+            "maxLength": 200,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 64,
+          "minItems": 1,
+          "title": "Active Providers",
+          "type": "array"
+        },
+        "agreement": {
+          "$ref": "#/$defs/Agreement"
+        },
+        "bundle_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Bundle Sha256",
+          "type": "string"
+        },
+        "cases": {
+          "maximum": 100000,
+          "minimum": 1,
+          "title": "Cases",
+          "type": "integer"
+        },
+        "device": {
+          "$ref": "#/$defs/Device"
+        },
+        "edgeforge_version": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Edgeforge Version",
+          "type": "string"
+        },
+        "latency_ms": {
+          "$ref": "#/$defs/Latency"
+        },
+        "measured_at": {
+          "maxLength": 64,
+          "minLength": 1,
+          "title": "Measured At",
+          "type": "string"
+        },
+        "measurement_scope": {
+          "const": "serial adapter call including tensor conversion and materialization; excludes model load, preprocessing, RSS sampling and comparison",
+          "title": "Measurement Scope",
+          "type": "string"
+        },
+        "memory": {
+          "$ref": "#/$defs/Memory"
+        },
+        "options": {
+          "$ref": "#/$defs/BenchmarkOptions"
+        },
+        "requested_provider": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Requested Provider",
+          "type": "string"
+        },
+        "runtime": {
+          "enum": [
+            "onnx",
+            "executorch"
+          ],
+          "title": "Runtime",
+          "type": "string"
+        },
+        "runtime_version": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Runtime Version",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": 1,
+          "default": 1,
+          "title": "Schema Version",
+          "type": "integer"
+        },
+        "storage": {
+          "$ref": "#/$defs/Storage"
+        },
+        "threads": {
+          "anyOf": [
+            {
+              "maximum": 64,
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Threads"
+        }
+      },
+      "required": [
+        "edgeforge_version",
+        "bundle_sha256",
+        "measured_at",
+        "runtime",
+        "runtime_version",
+        "requested_provider",
+        "active_providers",
+        "threads",
+        "options",
+        "cases",
+        "latency_ms",
+        "memory",
+        "storage",
+        "agreement",
+        "device",
+        "measurement_scope"
+      ],
+      "title": "ReportEvidence",
+      "type": "object"
+    },
+    "Storage": {
+      "additionalProperties": false,
+      "properties": {
+        "bundle_bytes": {
+          "maximum": 604045312,
+          "minimum": 1,
+          "title": "Bundle Bytes",
+          "type": "integer"
+        },
+        "model_bytes": {
+          "maximum": 536870912,
+          "minimum": 1,
+          "title": "Model Bytes",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "model_bytes",
+        "bundle_bytes"
+      ],
+      "title": "Storage",
+      "type": "object"
+    },
+    "StorageDelta": {
+      "additionalProperties": false,
+      "properties": {
+        "bundle_bytes": {
+          "title": "Bundle Bytes",
+          "type": "integer"
+        },
+        "model_bytes": {
+          "title": "Model Bytes",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "model_bytes",
+        "bundle_bytes"
+      ],
+      "title": "StorageDelta",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "after": {
+      "$ref": "#/$defs/ReportEvidence"
+    },
+    "after_report_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "After Report Sha256",
+      "type": "string"
+    },
+    "before": {
+      "$ref": "#/$defs/ReportEvidence"
+    },
+    "before_report_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Before Report Sha256",
+      "type": "string"
+    },
+    "compatible": {
+      "title": "Compatible",
+      "type": "boolean"
+    },
+    "direction": {
+      "const": "after_minus_before",
+      "default": "after_minus_before",
+      "title": "Direction",
+      "type": "string"
+    },
+    "hardware_identity": {
+      "const": "not_established",
+      "default": "not_established",
+      "title": "Hardware Identity",
+      "type": "string"
+    },
+    "incompatibility_reasons": {
+      "items": {
+        "enum": [
+          "bundle",
+          "options",
+          "runtime",
+          "runtime_version",
+          "requested_provider",
+          "active_providers",
+          "threads",
+          "cases",
+          "device",
+          "edgeforge_version"
+        ],
+        "type": "string"
+      },
+      "title": "Incompatibility Reasons",
+      "type": "array"
+    },
+    "interpretation": {
+      "const": "descriptive_only_no_performance_verdict",
+      "default": "descriptive_only_no_performance_verdict",
+      "title": "Interpretation",
+      "type": "string"
+    },
+    "latency_ms_delta": {
+      "$ref": "#/$defs/LatencyDelta"
+    },
+    "memory_delta": {
+      "$ref": "#/$defs/MemoryDelta"
+    },
+    "schema_version": {
+      "const": 1,
+      "default": 1,
+      "title": "Schema Version",
+      "type": "integer"
+    },
+    "storage_delta": {
+      "$ref": "#/$defs/StorageDelta"
+    }
+  },
+  "required": [
+    "before",
+    "after",
+    "before_report_sha256",
+    "after_report_sha256",
+    "compatible",
+    "incompatibility_reasons",
+    "latency_ms_delta",
+    "memory_delta",
+    "storage_delta"
+  ],
+  "title": "ReportComparison",
+  "type": "object"
+}

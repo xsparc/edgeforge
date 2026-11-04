@@ -44,7 +44,7 @@ def preprocess(inputs: dict[str, np.ndarray], config: ModelConfig) -> dict[str, 
                 array = (array * transform.scale + transform.offset).astype(spec.dtype)
         if not np.isfinite(array).all():
             raise EdgeForgeError("preprocessing produced nonfinite values")
-        result[spec.name] = np.ascontiguousarray(array)
+        result[spec.name] = np.array(array, copy=True, order="C")
     return result
 
 
