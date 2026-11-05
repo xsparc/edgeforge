@@ -32,6 +32,17 @@ def parser() -> argparse.ArgumentParser:
         "comparison-check", help="Check a retained comparison without execution"
     )
     retained.add_argument("comparison", type=Path)
+    retained.add_argument("--expected-sha256")
+    identity = commands.add_parser(
+        "comparison-identity", help="Print a canonical comparison digest"
+    )
+    identity.add_argument("comparison", type=Path)
+    canonical = commands.add_parser(
+        "comparison-canonical", help="Export canonical retained comparison bytes"
+    )
+    canonical.add_argument("comparison", type=Path)
+    canonical.add_argument("--output", required=True, type=Path)
+    canonical.add_argument("--expected-sha256")
     verify = commands.add_parser(
         "comparison-verify", help="Verify a comparison against two reports"
     )
@@ -42,6 +53,7 @@ def parser() -> argparse.ArgumentParser:
     render = commands.add_parser("comparison-html", help="Render a checked retained comparison")
     render.add_argument("comparison", type=Path)
     render.add_argument("--output", required=True, type=Path)
+    render.add_argument("--expected-sha256")
     compare = commands.add_parser(
         "report-compare", help="Compare two retained reports without execution"
     )
@@ -168,7 +180,13 @@ def run(args: argparse.Namespace) -> dict:
 def main() -> int:
     args = parser().parse_args()
     try:
-        if args.command in {"comparison-check", "comparison-verify", "comparison-html"}:
+        if args.command in {
+            "comparison-check",
+            "comparison-verify",
+            "comparison-html",
+            "comparison-identity",
+            "comparison-canonical",
+        }:
             from .comparison import MAX_COMPARISON_BYTES
             from .comparison_review import (
                 read_comparison,
@@ -197,7 +215,22 @@ def main() -> int:
                 )
             else:
                 comparison = read_comparison(raw)
-                if args.command == "comparison-html":
+                from .comparison_identity import (
+                    canonical_comparison,
+                    comparison_identity,
+                    verify_expected_identity,
+                )
+
+                if getattr(args, "expected_sha256", None) is not None:
+                    verify_expected_identity(comparison, args.expected_sha256)
+                if args.command in {"comparison-identity", "comparison-canonical"}:
+                    identity = comparison_identity(comparison)
+                    if args.command == "comparison-canonical":
+                        output = canonical_comparison(comparison)
+                        with args.output.open("xb") as stream:
+                            stream.write(output)
+                    print(json.dumps(identity))
+                elif args.command == "comparison-html":
                     output = render_comparison_html(comparison).encode("utf-8")
                     with args.output.open("xb") as stream:
                         stream.write(output)

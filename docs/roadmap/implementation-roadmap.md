@@ -37,3 +37,9 @@ Next five tasks: `docs/next-milestone.md` (planned only).
 
 Implements the retained handoff from 2026-10-31. Design: `docs/architecture/decisions/0004-comparison-review.md`.
 Acceptance: `docs/governance/comparison-review-validation.md`. Next tasks: `docs/next-milestone.md`.
+
+## EF-007: Canonical comparisons (2026-11-05)
+
+Completed the saved milestone with bounded, non-executing retained-evidence checks.
+See `docs/architecture/decisions/0005-canonical-comparisons.md`, `docs/canonical-comparisons.md` and `docs/governance/canonical-comparisons-validation.md`.
+The next five tasks in `docs/next-milestone.md` are planned only.

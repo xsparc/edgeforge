@@ -18,3 +18,9 @@ selection, and the planned next milestone are unchanged.
 ## 2026-11-04: EF-006
 
 Retained comparison review: `docs/architecture/decisions/0004-comparison-review.md`; verification `docs/governance/comparison-review-validation.md`.
+
+## EF-007: Canonical comparisons (2026-11-05)
+
+Completed the saved milestone with bounded, non-executing retained-evidence checks.
+See `docs/architecture/decisions/0005-canonical-comparisons.md`, `docs/canonical-comparisons.md` and `docs/governance/canonical-comparisons-validation.md`.
+The next five tasks in `docs/next-milestone.md` are planned only.

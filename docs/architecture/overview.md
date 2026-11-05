@@ -76,3 +76,9 @@ execution authority. See the [accepted decision](decisions/0003-benchmark-compar
 
 EF-006 validates retained evidence and compares it with explicit sources without
 execution. See [the accepted decision](decisions/0004-comparison-review.md).
+
+## EF-007: Canonical comparisons (2026-11-05)
+
+Completed the saved milestone with bounded, non-executing retained-evidence checks.
+See `docs/architecture/decisions/0005-canonical-comparisons.md`, `docs/canonical-comparisons.md` and `docs/governance/canonical-comparisons-validation.md`.
+The next five tasks in `docs/next-milestone.md` are planned only.
