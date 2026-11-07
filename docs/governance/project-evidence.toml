@@ -165,3 +165,31 @@ roadmap_refs = ["docs/roadmap/implementation-roadmap.md"]
 approval_ref = "conversation:2026-11-04-next-autonomous-milestone-and-draft-prs"
 acceptance_refs = ["docs/architecture/decisions/0004-comparison-review.md"]
 evidence_refs = ["tests/test_comparison_review.py", "docs/governance/comparison-review-validation.md"]
+
+[[research_decisions]]
+id = "RD-CANONICAL-COMPARISONS"
+disposition = "adopted"
+source_refs = ["docs/research/2026-11-05-canonical-comparisons.md"]
+design_refs = ["docs/architecture/decisions/0005-canonical-comparisons.md"]
+
+[[requirements]]
+id = "REQ-CANONICAL-COMPARISONS"
+statement = "Canonical comparisons with bounded input and explicit evidence limits."
+status = "implemented"
+objective_ids = ["OBJ-PORTABLE-INFERENCE"]
+roadmap_refs = ["docs/roadmap/implementation-roadmap.md"]
+design_refs = ["docs/architecture/decisions/0005-canonical-comparisons.md"]
+risk_refs = ["docs/canonical-comparisons.md"]
+implementation_refs = ["src/edgeforge/comparison_identity.py"]
+verification_refs = ["tests/test_comparison_identity.py"]
+validation_refs = ["docs/governance/canonical-comparisons-validation.md"]
+
+[[work_items]]
+id = "EF-007-CANONICAL-COMPARISONS"
+title = "Canonical comparisons"
+status = "verified"
+requirement_ids = ["REQ-CANONICAL-COMPARISONS"]
+roadmap_refs = ["docs/roadmap/implementation-roadmap.md"]
+approval_ref = "conversation:2026-11-05-next-autonomous-milestone-and-draft-prs"
+acceptance_refs = ["docs/architecture/decisions/0005-canonical-comparisons.md"]
+evidence_refs = ["tests/test_comparison_identity.py", "docs/governance/canonical-comparisons-validation.md"]
