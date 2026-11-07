@@ -43,3 +43,9 @@ Acceptance: `docs/governance/comparison-review-validation.md`. Next tasks: `docs
 Completed the saved milestone with bounded, non-executing retained-evidence checks.
 See `docs/architecture/decisions/0005-canonical-comparisons.md`, `docs/canonical-comparisons.md` and `docs/governance/canonical-comparisons-validation.md`.
 The next five tasks in `docs/next-milestone.md` are planned only.
+
+## EF-008: Retained identities (2026-11-07)
+
+Implemented the saved retained-evidence tasks. Decision: `docs/architecture/decisions/0006-retained-identities.md`.
+Workflow and limits: `docs/retained-identities.md`. Verification: `docs/governance/retained-identities-validation.md`.
+The shared next-five project tracker is `docs/next-milestone.md`; its tasks remain planned.
