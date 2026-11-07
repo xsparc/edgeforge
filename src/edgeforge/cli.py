@@ -32,7 +32,7 @@ def parser() -> argparse.ArgumentParser:
         "comparison-check", help="Check a retained comparison without execution"
     )
     retained.add_argument("comparison", type=Path)
-    retained.add_argument("--expected-sha256")
+
     identity = commands.add_parser(
         "comparison-identity", help="Print a canonical comparison digest"
     )
@@ -42,7 +42,7 @@ def parser() -> argparse.ArgumentParser:
     )
     canonical.add_argument("comparison", type=Path)
     canonical.add_argument("--output", required=True, type=Path)
-    canonical.add_argument("--expected-sha256")
+
     verify = commands.add_parser(
         "comparison-verify", help="Verify a comparison against two reports"
     )
@@ -53,7 +53,16 @@ def parser() -> argparse.ArgumentParser:
     render = commands.add_parser("comparison-html", help="Render a checked retained comparison")
     render.add_argument("comparison", type=Path)
     render.add_argument("--output", required=True, type=Path)
-    render.add_argument("--expected-sha256")
+    for command in (retained, canonical, render):
+        expected = command.add_mutually_exclusive_group()
+        expected.add_argument("--expected-sha256")
+        expected.add_argument("--identity", type=Path)
+    commands.add_parser("comparison-identity-schema", help="Print the retained identity schema")
+    verify_identity = commands.add_parser(
+        "comparison-verify-identity", help="Verify a comparison against an identity file"
+    )
+    verify_identity.add_argument("comparison", type=Path)
+    verify_identity.add_argument("identity", type=Path)
     compare = commands.add_parser(
         "report-compare", help="Compare two retained reports without execution"
     )
@@ -84,6 +93,10 @@ def parser() -> argparse.ArgumentParser:
 
 
 def run(args: argparse.Namespace) -> dict:
+    if args.command == "comparison-identity-schema":
+        from .comparison_identity import ComparisonIdentity
+
+        return ComparisonIdentity.model_json_schema()
     if args.command == "comparison-schema":
         from .comparison import ReportComparison
 
@@ -186,6 +199,7 @@ def main() -> int:
             "comparison-html",
             "comparison-identity",
             "comparison-canonical",
+            "comparison-verify-identity",
         }:
             from .comparison import MAX_COMPARISON_BYTES
             from .comparison_review import (
@@ -216,11 +230,18 @@ def main() -> int:
             else:
                 comparison = read_comparison(raw)
                 from .comparison_identity import (
+                    MAX_IDENTITY_BYTES,
                     canonical_comparison,
                     comparison_identity,
+                    read_identity,
                     verify_expected_identity,
+                    verify_identity_record,
                 )
 
+                if getattr(args, "identity", None) is not None:
+                    verify_identity_record(
+                        comparison, read_identity(read_bounded(args.identity, MAX_IDENTITY_BYTES))
+                    )
                 if getattr(args, "expected_sha256", None) is not None:
                     verify_expected_identity(comparison, args.expected_sha256)
                 if args.command in {"comparison-identity", "comparison-canonical"}:
