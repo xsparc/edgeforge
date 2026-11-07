@@ -61,3 +61,24 @@ every metric. RSS includes the whole process; it is not accelerator memory.
 Provider availability does not prove that every node executes on that provider.
 Native runtime parsing is not a security sandbox. Use trusted models and isolate
 workers before processing third-party models. See [security](../security.md).
+
+## Retained benchmark report review
+
+The strict ReportEvidence reader validates retained benchmark JSON. Offline commands expose its schema, check bundle identity and counts, and export portable CSV. A native synthetic workflow verifies the integration while preserving the benchmark producer/API contract.
+See [EF-004 decision](decisions/0002-retained-report-review.md) for compatibility, acceptance and limits.
+
+## Descriptive benchmark comparisons
+
+EF-005 adds bounded offline contracts and verification without changing runtime
+execution authority. See the [accepted decision](decisions/0003-benchmark-comparison.md) and its explicit evidence limits.
+
+## Retained comparison review
+
+EF-006 validates retained evidence and compares it with explicit sources without
+execution. See [the accepted decision](decisions/0004-comparison-review.md).
+
+## EF-007: Canonical comparisons (2026-11-05)
+
+Completed the saved milestone with bounded, non-executing retained-evidence checks.
+See `docs/architecture/decisions/0005-canonical-comparisons.md`, `docs/canonical-comparisons.md` and `docs/governance/canonical-comparisons-validation.md`.
+The next five tasks in `docs/next-milestone.md` are planned only.
