@@ -63,6 +63,14 @@ def parser() -> argparse.ArgumentParser:
     )
     verify_identity.add_argument("comparison", type=Path)
     verify_identity.add_argument("identity", type=Path)
+    review = commands.add_parser(
+        "comparison-review", help="Render a comparison checked against explicit reports"
+    )
+    review.add_argument("comparison", type=Path)
+    review.add_argument("before", type=Path)
+    review.add_argument("after", type=Path)
+    review.add_argument("--identity", type=Path)
+    review.add_argument("--output", required=True, type=Path)
     compare = commands.add_parser(
         "report-compare", help="Compare two retained reports without execution"
     )
@@ -200,6 +208,7 @@ def main() -> int:
             "comparison-identity",
             "comparison-canonical",
             "comparison-verify-identity",
+            "comparison-review",
         }:
             from .comparison import MAX_COMPARISON_BYTES
             from .comparison_review import (
@@ -229,6 +238,12 @@ def main() -> int:
                 )
             else:
                 comparison = read_comparison(raw)
+                if args.command == "comparison-review":
+                    verify_comparison(
+                        read_source(read_bounded(args.before, MAX_REPORT_BYTES)),
+                        read_source(read_bounded(args.after, MAX_REPORT_BYTES)),
+                        raw,
+                    )
                 from .comparison_identity import (
                     MAX_IDENTITY_BYTES,
                     canonical_comparison,
@@ -251,7 +266,7 @@ def main() -> int:
                         with args.output.open("xb") as stream:
                             stream.write(output)
                     print(json.dumps(identity))
-                elif args.command == "comparison-html":
+                elif args.command in {"comparison-html", "comparison-review"}:
                     output = render_comparison_html(comparison).encode("utf-8")
                     with args.output.open("xb") as stream:
                         stream.write(output)
