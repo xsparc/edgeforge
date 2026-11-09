@@ -193,3 +193,31 @@ roadmap_refs = ["docs/roadmap/implementation-roadmap.md"]
 approval_ref = "conversation:2026-11-05-next-autonomous-milestone-and-draft-prs"
 acceptance_refs = ["docs/architecture/decisions/0005-canonical-comparisons.md"]
 evidence_refs = ["tests/test_comparison_identity.py", "docs/governance/canonical-comparisons-validation.md"]
+
+[[research_decisions]]
+id = "RD-RETAINED-IDENTITIES"
+disposition = "adopted"
+source_refs = ["docs/research/2026-11-07-retained-identities.md"]
+design_refs = ["docs/architecture/decisions/0006-retained-identities.md"]
+
+[[requirements]]
+id = "REQ-RETAINED-IDENTITIES"
+statement = "Retained identities with bounded intake, independent verification targets and explicit evidence limits."
+status = "implemented"
+objective_ids = ["OBJ-PORTABLE-INFERENCE"]
+roadmap_refs = ["docs/roadmap/implementation-roadmap.md"]
+design_refs = ["docs/architecture/decisions/0006-retained-identities.md"]
+risk_refs = ["docs/retained-identities.md"]
+implementation_refs = ["src/edgeforge/comparison_identity.py", "src/edgeforge/cli.py", "schemas/comparison-identity.schema.json"]
+verification_refs = ["tests/test_retained_identity.py"]
+validation_refs = ["docs/governance/retained-identities-validation.md"]
+
+[[work_items]]
+id = "EF-008-RETAINED-IDENTITIES"
+title = "Retained identities"
+status = "verified"
+requirement_ids = ["REQ-RETAINED-IDENTITIES"]
+roadmap_refs = ["docs/roadmap/implementation-roadmap.md"]
+approval_ref = "conversation:2026-11-07-next-autonomous-milestone-and-draft-prs"
+acceptance_refs = ["docs/architecture/decisions/0006-retained-identities.md"]
+evidence_refs = ["tests/test_retained_identity.py", "docs/governance/retained-identities-validation.md"]

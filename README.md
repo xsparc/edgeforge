@@ -74,3 +74,5 @@ See [benchmark comparison](docs/benchmark-comparison.md) for the latest offline 
 See [retained comparison review](docs/comparison-review.md) for retained evidence checks and their limits.
 
 See [Canonical comparisons](docs/canonical-comparisons.md) for the retained-evidence workflow and its limits.
+
+See [Retained identities](docs/retained-identities.md) for the verification workflow and evidence limits.
