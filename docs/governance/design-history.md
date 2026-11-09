@@ -30,3 +30,9 @@ The next five tasks in `docs/next-milestone.md` are planned only.
 Implemented the saved retained-evidence tasks. Decision: `docs/architecture/decisions/0006-retained-identities.md`.
 Workflow and limits: `docs/retained-identities.md`. Verification: `docs/governance/retained-identities-validation.md`.
 The shared next-five project tracker is `docs/next-milestone.md`; its tasks remain planned.
+
+## EF-009: Source checked review (2026-11-09)
+
+Implemented the saved review tasks. Decision: `docs/architecture/decisions/0007-source-checked-review.md`.
+Workflow: `docs/source-checked-review.md`. Verification and limits: `docs/governance/source-checked-review-validation.md`.
+The shared next-five project tracker is `docs/next-milestone.md`; those tasks remain planned.
