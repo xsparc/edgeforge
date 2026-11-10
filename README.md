@@ -78,3 +78,5 @@ See [Canonical comparisons](docs/canonical-comparisons.md) for the retained-evid
 See [Retained identities](docs/retained-identities.md) for the verification workflow and evidence limits.
 
 See [Source checked review](docs/source-checked-review.md) for the bounded review workflow.
+
+See [Portable review exports](docs/portable-review-exports.md) for the portable review workflow.
