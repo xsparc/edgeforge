@@ -94,3 +94,9 @@ The shared next-five project tracker is `docs/next-milestone.md`; its tasks rema
 Implemented the saved review tasks. Decision: `docs/architecture/decisions/0007-source-checked-review.md`.
 Workflow: `docs/source-checked-review.md`. Verification and limits: `docs/governance/source-checked-review-validation.md`.
 The shared next-five project tracker is `docs/next-milestone.md`; those tasks remain planned.
+
+## EF-010: Portable review exports (2026-11-10)
+
+Implemented the saved portable review tasks. Decision: `docs/architecture/decisions/0008-portable-review-exports.md`.
+Workflow: `docs/portable-review-exports.md`. Verification and limits: `docs/governance/portable-review-exports-validation.md`.
+The next-five project tracker is `docs/next-milestone.md`; those tasks remain planned.

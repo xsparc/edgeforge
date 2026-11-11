@@ -71,6 +71,7 @@ def parser() -> argparse.ArgumentParser:
     review.add_argument("after", type=Path)
     review.add_argument("--identity", type=Path)
     review.add_argument("--output", required=True, type=Path)
+    review.add_argument("--format", choices=["html", "csv"], default="html")
     compare = commands.add_parser(
         "report-compare", help="Compare two retained reports without execution"
     )
@@ -210,7 +211,7 @@ def main() -> int:
             "comparison-verify-identity",
             "comparison-review",
         }:
-            from .comparison import MAX_COMPARISON_BYTES
+            from .comparison import MAX_COMPARISON_BYTES, render_comparison_csv
             from .comparison_review import (
                 read_comparison,
                 read_source,
@@ -267,7 +268,13 @@ def main() -> int:
                             stream.write(output)
                     print(json.dumps(identity))
                 elif args.command in {"comparison-html", "comparison-review"}:
-                    output = render_comparison_html(comparison).encode("utf-8")
+                    output = (
+                        render_comparison_csv(comparison)
+                        if args.command == "comparison-review" and args.format == "csv"
+                        else render_comparison_html(comparison)
+                    ).encode("utf-8")
+                    if len(output) > MAX_COMPARISON_BYTES:
+                        raise EdgeForgeError("review exceeds byte limit")
                     with args.output.open("xb") as stream:
                         stream.write(output)
                 else:

@@ -10,8 +10,11 @@ from edgeforge.comparison_identity import comparison_identity
 from edgeforge.comparison_review import read_source
 
 
-def test_source_checked_review_native(evidence, tmp_path, capsys, monkeypatch):
+@pytest.mark.parametrize("format", ["html", "csv"])
+def test_source_checked_review_native(evidence, tmp_path, capsys, monkeypatch, format):
     def cli(args):
+        if args[0] == "comparison-review":
+            args = [*args, "--format", format]
         monkeypatch.setattr(sys, "argv", ["edgeforge", *map(str, args)])
         return main()
 
@@ -39,7 +42,12 @@ def test_source_checked_review_native(evidence, tmp_path, capsys, monkeypatch):
         args = ["comparison-review", retained, left, right, "--output", out, *gate]
         assert cli(args) == 0
         html = out.read_bytes()
-        assert b"<script>" not in html and b"&lt;script&gt;" in html
+        if format == "html":
+            assert b"<script>" not in html and b"&lt;script&gt;" in html
+        else:
+            from edgeforge.comparison import render_comparison_csv
+
+            assert html == render_comparison_csv(comparison).encode("utf-8")
         assert cli(args) == 2 and out.read_bytes() == html
     assert all(p.read_bytes() == raw for p, raw in originals.items())
     for a, b in [(left, left), (right, left)]:
@@ -69,3 +77,40 @@ def test_source_checked_review_native(evidence, tmp_path, capsys, monkeypatch):
     assert cli(["comparison-review", retained, left, right, "--output", out]) == 2
     assert not out.exists()
     assert str(tmp_path) not in capsys.readouterr().err
+
+
+def test_executable_portable_example(tmp_path):
+    import runpy
+
+    pytest.importorskip("onnxruntime")
+    pytest.importorskip("onnx")
+    example = runpy.run_path("examples/portable_review.py")
+    result = example["run"](tmp_path / "portable-review")
+    assert result["verified"] and result["review_execution"] == "none"
+
+
+def test_csv_review_output_bound(evidence, tmp_path, monkeypatch):
+    source = read_source(evidence[2])
+    comparison = compare_reports(source, source)
+    left, retained, output = [tmp_path / n for n in ["source.json", "comparison.json", "out.csv"]]
+    left.write_text(source.model_dump_json())
+    retained.write_text(comparison.model_dump_json())
+    monkeypatch.setattr(
+        "edgeforge.comparison.render_comparison_csv", lambda c: "x" * (512 * 1024 + 1)
+    )
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        [
+            "edgeforge",
+            "comparison-review",
+            str(retained),
+            str(left),
+            str(left),
+            "--format",
+            "csv",
+            "--output",
+            str(output),
+        ],
+    )
+    assert main() == 2 and not output.exists()
