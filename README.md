@@ -80,3 +80,5 @@ See [Retained identities](docs/retained-identities.md) for the verification work
 See [Source checked review](docs/source-checked-review.md) for the bounded review workflow.
 
 See [Portable review exports](docs/portable-review-exports.md) for the portable review workflow.
+
+See [Comparison html verification](docs/comparison-html-verification.md) for the retained review workflow.

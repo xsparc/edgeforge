@@ -145,3 +145,12 @@ def render_comparison_html(comparison: ReportComparison) -> str:
     if len(output.encode("utf-8")) > MAX_COMPARISON_BYTES:
         raise EdgeForgeError("rendered comparison exceeds byte limit")
     return output
+
+
+def verify_comparison_html(comparison, raw: bytes) -> None:
+    if len(raw) > MAX_COMPARISON_BYTES:
+        raise EdgeForgeError("HTML exceeds byte limit")
+    checked = read_comparison(comparison.model_dump_json().encode("utf-8"))
+    expected = render_comparison_html(checked).encode("utf-8")
+    if len(expected) > MAX_COMPARISON_BYTES or raw != expected:
+        raise EdgeForgeError("HTML differs from canonical rendering")
