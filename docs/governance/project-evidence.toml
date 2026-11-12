@@ -277,3 +277,31 @@ roadmap_refs = ["docs/roadmap/implementation-roadmap.md"]
 approval_ref = "conversation:2026-11-10-next-autonomous-milestone-and-draft-prs"
 acceptance_refs = ["docs/architecture/decisions/0008-portable-review-exports.md"]
 evidence_refs = ["tests/test_source_review.py", "docs/governance/portable-review-exports-validation.md"]
+
+[[research_decisions]]
+id = "RD-COMPARISON-HTML-VERIFICATION"
+disposition = "adopted"
+source_refs = ["docs/research/2026-11-11-comparison-html-verification.md"]
+design_refs = ["docs/architecture/decisions/0009-comparison-html-verification.md"]
+
+[[requirements]]
+id = "REQ-COMPARISON-HTML-VERIFICATION"
+statement = "Comparison html verification with bounded intake and independent evidence gates."
+status = "implemented"
+objective_ids = ["OBJ-PORTABLE-INFERENCE"]
+roadmap_refs = ["docs/roadmap/implementation-roadmap.md"]
+design_refs = ["docs/architecture/decisions/0009-comparison-html-verification.md"]
+risk_refs = ["docs/comparison-html-verification.md"]
+implementation_refs = ["src/edgeforge/comparison_review.py", "src/edgeforge/cli.py"]
+verification_refs = ["tests/test_html_verification.py"]
+validation_refs = ["docs/governance/comparison-html-verification-validation.md"]
+
+[[work_items]]
+id = "EF-011-COMPARISON-HTML-VERIFICATION"
+title = "Comparison html verification"
+status = "verified"
+requirement_ids = ["REQ-COMPARISON-HTML-VERIFICATION"]
+roadmap_refs = ["docs/roadmap/implementation-roadmap.md"]
+approval_ref = "conversation:2026-11-11-next-autonomous-milestone-and-draft-prs"
+acceptance_refs = ["docs/architecture/decisions/0009-comparison-html-verification.md"]
+evidence_refs = ["tests/test_html_verification.py", "docs/governance/comparison-html-verification-validation.md"]

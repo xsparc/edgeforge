@@ -72,6 +72,12 @@ def parser() -> argparse.ArgumentParser:
     review.add_argument("--identity", type=Path)
     review.add_argument("--output", required=True, type=Path)
     review.add_argument("--format", choices=["html", "csv"], default="html")
+    html_check = commands.add_parser("comparison-verify-html", help="Verify exact HTML and sources")
+    html_check.add_argument("comparison", type=Path)
+    html_check.add_argument("before", type=Path)
+    html_check.add_argument("after", type=Path)
+    html_check.add_argument("html", type=Path)
+    html_check.add_argument("--identity", type=Path)
     compare = commands.add_parser(
         "report-compare", help="Compare two retained reports without execution"
     )
@@ -210,6 +216,7 @@ def main() -> int:
             "comparison-canonical",
             "comparison-verify-identity",
             "comparison-review",
+            "comparison-verify-html",
         }:
             from .comparison import MAX_COMPARISON_BYTES, render_comparison_csv
             from .comparison_review import (
@@ -217,6 +224,7 @@ def main() -> int:
                 read_source,
                 render_comparison_html,
                 verify_comparison,
+                verify_comparison_html,
             )
             from .reports import MAX_REPORT_BYTES
 
@@ -239,7 +247,7 @@ def main() -> int:
                 )
             else:
                 comparison = read_comparison(raw)
-                if args.command == "comparison-review":
+                if args.command in {"comparison-review", "comparison-verify-html"}:
                     verify_comparison(
                         read_source(read_bounded(args.before, MAX_REPORT_BYTES)),
                         read_source(read_bounded(args.after, MAX_REPORT_BYTES)),
@@ -260,7 +268,20 @@ def main() -> int:
                     )
                 if getattr(args, "expected_sha256", None) is not None:
                     verify_expected_identity(comparison, args.expected_sha256)
-                if args.command in {"comparison-identity", "comparison-canonical"}:
+                if args.command == "comparison-verify-html":
+                    verify_comparison_html(
+                        comparison, read_bounded(args.html, MAX_COMPARISON_BYTES)
+                    )
+                    print(
+                        json.dumps(
+                            {
+                                "schema_version": 1,
+                                "verified": True,
+                                "interpretation": "local_source_consistency_only",
+                            }
+                        )
+                    )
+                elif args.command in {"comparison-identity", "comparison-canonical"}:
                     identity = comparison_identity(comparison)
                     if args.command == "comparison-canonical":
                         output = canonical_comparison(comparison)

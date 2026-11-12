@@ -61,3 +61,9 @@ The shared next-five project tracker is `docs/next-milestone.md`; those tasks re
 Implemented the saved portable review tasks. Decision: `docs/architecture/decisions/0008-portable-review-exports.md`.
 Workflow: `docs/portable-review-exports.md`. Verification and limits: `docs/governance/portable-review-exports-validation.md`.
 The next-five project tracker is `docs/next-milestone.md`; those tasks remain planned.
+
+## EF-011: Comparison html verification (2026-11-11)
+
+Implemented the saved handoff. Decision: `docs/architecture/decisions/0009-comparison-html-verification.md`.
+Workflow and limitations: `docs/comparison-html-verification.md`. Verification: `docs/governance/comparison-html-verification-validation.md`.
+The next five planned tasks are tracked in `docs/next-milestone.md`.
