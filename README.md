@@ -82,3 +82,5 @@ See [Source checked review](docs/source-checked-review.md) for the bounded revie
 See [Portable review exports](docs/portable-review-exports.md) for the portable review workflow.
 
 See [Comparison html verification](docs/comparison-html-verification.md) for the retained review workflow.
+
+See [Comparison bundles](docs/comparison-bundles.md) for the retained evidence workflow.

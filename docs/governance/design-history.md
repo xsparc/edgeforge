@@ -48,3 +48,9 @@ The next-five project tracker is `docs/next-milestone.md`; those tasks remain pl
 Implemented the saved handoff. Decision: `docs/architecture/decisions/0009-comparison-html-verification.md`.
 Workflow and limitations: `docs/comparison-html-verification.md`. Verification: `docs/governance/comparison-html-verification-validation.md`.
 The next five planned tasks are tracked in `docs/next-milestone.md`.
+
+## EF-012: Comparison bundles (2026-11-12)
+
+Implemented the saved handoff. Decision: `docs/architecture/decisions/0010-comparison-bundles.md`.
+Workflow and limitations: `docs/comparison-bundles.md`. Verification: `docs/governance/comparison-bundles-validation.md`.
+The next five planned tasks are tracked in `docs/next-milestone.md`.
