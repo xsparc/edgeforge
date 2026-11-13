@@ -16,6 +16,15 @@ from .errors import EdgeForgeError
 def parser() -> argparse.ArgumentParser:
     root = argparse.ArgumentParser(prog="edgeforge", description="Portable edge AI bundles")
     commands = root.add_subparsers(dest="command", required=True)
+    commands.add_parser(
+        "comparison-bundle-schema", help="Print the portable comparison bundle schema"
+    )
+    retain = commands.add_parser("comparison-bundle", help="Retain reports and derived comparison")
+    retain.add_argument("before", type=Path)
+    retain.add_argument("after", type=Path)
+    retain.add_argument("--output", type=Path, required=True)
+    bundle_check = commands.add_parser("comparison-bundle-verify", help="Verify portable evidence")
+    bundle_check.add_argument("bundle", type=Path)
     build = commands.add_parser("pack", help="Build a reproducible deployment bundle")
     build.add_argument("--model", type=Path, required=True)
     build.add_argument("--vectors", type=Path, required=True)
@@ -208,6 +217,43 @@ def run(args: argparse.Namespace) -> dict:
 def main() -> int:
     args = parser().parse_args()
     try:
+        if args.command in {
+            "comparison-bundle",
+            "comparison-bundle-verify",
+            "comparison-bundle-schema",
+        }:
+            from .comparison_bundle import (
+                MAX_COMPARISON_BUNDLE_BYTES,
+                ComparisonBundle,
+                create_bundle,
+                encode_bundle,
+                read_bundle,
+            )
+            from .comparison_review import read_source
+            from .reports import MAX_REPORT_BYTES
+
+            if args.command == "comparison-bundle-schema":
+                print(json.dumps(ComparisonBundle.model_json_schema(), indent=2))
+            elif args.command == "comparison-bundle":
+                bundle = create_bundle(
+                    read_source(read_bounded(args.before, MAX_REPORT_BYTES)),
+                    read_source(read_bounded(args.after, MAX_REPORT_BYTES)),
+                )
+                raw = encode_bundle(bundle)
+                with args.output.open("xb") as stream:
+                    stream.write(raw)
+            else:
+                read_bundle(read_bounded(args.bundle, MAX_COMPARISON_BUNDLE_BYTES))
+                print(
+                    json.dumps(
+                        {
+                            "schema_version": 1,
+                            "verified": True,
+                            "interpretation": "local_source_consistency_only",
+                        }
+                    )
+                )
+            return 0
         if args.command in {
             "comparison-check",
             "comparison-verify",

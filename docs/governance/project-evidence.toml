@@ -305,3 +305,31 @@ roadmap_refs = ["docs/roadmap/implementation-roadmap.md"]
 approval_ref = "conversation:2026-11-11-next-autonomous-milestone-and-draft-prs"
 acceptance_refs = ["docs/architecture/decisions/0009-comparison-html-verification.md"]
 evidence_refs = ["tests/test_html_verification.py", "docs/governance/comparison-html-verification-validation.md"]
+
+[[research_decisions]]
+id = "RD-COMPARISON-BUNDLES"
+disposition = "adopted"
+source_refs = ["docs/research/2026-11-12-comparison-bundles.md"]
+design_refs = ["docs/architecture/decisions/0010-comparison-bundles.md"]
+
+[[requirements]]
+id = "REQ-COMPARISON-BUNDLES"
+statement = "Comparison bundles with bounded intake and explicit evidence checks."
+status = "implemented"
+objective_ids = ["OBJ-PORTABLE-INFERENCE"]
+roadmap_refs = ["docs/roadmap/implementation-roadmap.md"]
+design_refs = ["docs/architecture/decisions/0010-comparison-bundles.md"]
+risk_refs = ["docs/comparison-bundles.md"]
+implementation_refs = ["src/edgeforge/comparison_bundle.py", "src/edgeforge/cli.py", "schemas/comparison-bundle.schema.json"]
+verification_refs = ["tests/test_comparison_bundle.py"]
+validation_refs = ["docs/governance/comparison-bundles-validation.md"]
+
+[[work_items]]
+id = "EF-012-COMPARISON-BUNDLES"
+title = "Comparison bundles"
+status = "verified"
+requirement_ids = ["REQ-COMPARISON-BUNDLES"]
+roadmap_refs = ["docs/roadmap/implementation-roadmap.md"]
+approval_ref = "conversation:2026-11-12-next-autonomous-milestone-and-draft-prs"
+acceptance_refs = ["docs/architecture/decisions/0010-comparison-bundles.md"]
+evidence_refs = ["tests/test_comparison_bundle.py", "docs/governance/comparison-bundles-validation.md"]
