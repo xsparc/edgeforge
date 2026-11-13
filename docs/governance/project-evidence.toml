@@ -333,3 +333,31 @@ roadmap_refs = ["docs/roadmap/implementation-roadmap.md"]
 approval_ref = "conversation:2026-11-12-next-autonomous-milestone-and-draft-prs"
 acceptance_refs = ["docs/architecture/decisions/0010-comparison-bundles.md"]
 evidence_refs = ["tests/test_comparison_bundle.py", "docs/governance/comparison-bundles-validation.md"]
+
+[[research_decisions]]
+id = "RD-SOURCE-CHECKED-BUNDLE-REVIEW"
+disposition = "adopted"
+source_refs = ["docs/research/2026-11-13-source-checked-bundle-review.md"]
+design_refs = ["docs/architecture/decisions/0011-source-checked-bundle-review.md"]
+
+[[requirements]]
+id = "REQ-SOURCE-CHECKED-BUNDLE-REVIEW"
+statement = "Source checked bundle review with independent evidence checks and exclusive output."
+status = "implemented"
+objective_ids = ["OBJ-PORTABLE-INFERENCE"]
+roadmap_refs = ["docs/roadmap/implementation-roadmap.md"]
+design_refs = ["docs/architecture/decisions/0011-source-checked-bundle-review.md"]
+risk_refs = ["docs/source-checked-bundle-review.md"]
+implementation_refs = ["src/edgeforge/comparison_bundle.py", "src/edgeforge/cli.py"]
+verification_refs = ["tests/test_bundle_review.py"]
+validation_refs = ["docs/governance/source-checked-bundle-review-validation.md"]
+
+[[work_items]]
+id = "EF-013-SOURCE-CHECKED-BUNDLE-REVIEW"
+title = "Source checked bundle review"
+status = "verified"
+requirement_ids = ["REQ-SOURCE-CHECKED-BUNDLE-REVIEW"]
+roadmap_refs = ["docs/roadmap/implementation-roadmap.md"]
+approval_ref = "conversation:2026-11-13-next-autonomous-milestone-and-draft-prs"
+acceptance_refs = ["docs/architecture/decisions/0011-source-checked-bundle-review.md"]
+evidence_refs = ["tests/test_bundle_review.py", "docs/governance/source-checked-bundle-review-validation.md"]

@@ -25,6 +25,13 @@ def parser() -> argparse.ArgumentParser:
     retain.add_argument("--output", type=Path, required=True)
     bundle_check = commands.add_parser("comparison-bundle-verify", help="Verify portable evidence")
     bundle_check.add_argument("bundle", type=Path)
+    bundle_render = commands.add_parser("comparison-bundle-render", help="Render portable evidence")
+    bundle_render.add_argument("bundle", type=Path)
+    bundle_render.add_argument("--format", choices=["html", "csv"], default="html")
+    bundle_render.add_argument("--output", type=Path, required=True)
+    for command in (bundle_check, bundle_render):
+        command.add_argument("--before", type=Path)
+        command.add_argument("--after", type=Path)
     build = commands.add_parser("pack", help="Build a reproducible deployment bundle")
     build.add_argument("--model", type=Path, required=True)
     build.add_argument("--vectors", type=Path, required=True)
@@ -221,6 +228,7 @@ def main() -> int:
             "comparison-bundle",
             "comparison-bundle-verify",
             "comparison-bundle-schema",
+            "comparison-bundle-render",
         }:
             from .comparison_bundle import (
                 MAX_COMPARISON_BUNDLE_BYTES,
@@ -228,6 +236,8 @@ def main() -> int:
                 create_bundle,
                 encode_bundle,
                 read_bundle,
+                render_bundle,
+                verify_sources,
             )
             from .comparison_review import read_source
             from .reports import MAX_REPORT_BYTES
@@ -243,7 +253,21 @@ def main() -> int:
                 with args.output.open("xb") as stream:
                     stream.write(raw)
             else:
-                read_bundle(read_bounded(args.bundle, MAX_COMPARISON_BUNDLE_BYTES))
+                raw = read_bounded(args.bundle, MAX_COMPARISON_BUNDLE_BYTES)
+                bundle = read_bundle(raw)
+                if (args.before is None) != (args.after is None):
+                    raise EdgeForgeError("both source reports are required")
+                if args.before is not None:
+                    bundle = verify_sources(
+                        raw,
+                        read_source(read_bounded(args.before, MAX_REPORT_BYTES)),
+                        read_source(read_bounded(args.after, MAX_REPORT_BYTES)),
+                    )
+                if args.command == "comparison-bundle-render":
+                    output = render_bundle(bundle, args.format)
+                    with args.output.open("xb") as stream:
+                        stream.write(output)
+                    return 0
                 print(
                     json.dumps(
                         {

@@ -77,3 +77,27 @@ def encode_bundle(bundle: ComparisonBundle) -> bytes:
 
 def read_bundle(raw: bytes) -> ComparisonBundle:
     return ComparisonBundle.model_validate(_decode(raw, MAX_COMPARISON_BUNDLE_BYTES))
+
+
+def verify_sources(raw: bytes, before: ReportEvidence, after: ReportEvidence) -> ComparisonBundle:
+    retained = read_bundle(raw)
+    if retained != create_bundle(before, after):
+        raise EdgeForgeError("bundle differs from explicit sources")
+    return retained
+
+
+def render_bundle(bundle: ComparisonBundle, format: str = "html") -> bytes:
+    from .comparison import render_comparison_csv
+    from .comparison_review import render_comparison_html
+
+    checked = ComparisonBundle.model_validate(bundle.model_dump())
+    if format == "html":
+        output = render_comparison_html(checked.comparison)
+    elif format == "csv":
+        output = render_comparison_csv(checked.comparison)
+    else:
+        raise EdgeForgeError("unsupported review format")
+    raw = output.encode("utf-8")
+    if len(raw) > MAX_COMPARISON_BYTES:
+        raise EdgeForgeError("rendered comparison exceeds byte limit")
+    return raw
