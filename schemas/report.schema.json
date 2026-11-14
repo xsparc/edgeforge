@@ -1,0 +1,173 @@
+{
+  "$defs": {
+    "BenchmarkOptions": {
+      "additionalProperties": false,
+      "properties": {
+        "atol": {
+          "default": 1e-05,
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Atol",
+          "type": "number"
+        },
+        "iterations": {
+          "default": 50,
+          "maximum": 10000,
+          "minimum": 1,
+          "title": "Iterations",
+          "type": "integer"
+        },
+        "rtol": {
+          "default": 0.0001,
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Rtol",
+          "type": "number"
+        },
+        "warmup": {
+          "default": 5,
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Warmup",
+          "type": "integer"
+        }
+      },
+      "title": "BenchmarkOptions",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "active_providers": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Active Providers",
+      "type": "array"
+    },
+    "agreement": {
+      "additionalProperties": {
+        "anyOf": [
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "integer"
+          },
+          {
+            "type": "number"
+          },
+          {
+            "type": "string"
+          }
+        ]
+      },
+      "title": "Agreement",
+      "type": "object"
+    },
+    "bundle_sha256": {
+      "title": "Bundle Sha256",
+      "type": "string"
+    },
+    "cases": {
+      "title": "Cases",
+      "type": "integer"
+    },
+    "device": {
+      "additionalProperties": true,
+      "title": "Device",
+      "type": "object"
+    },
+    "edgeforge_version": {
+      "title": "Edgeforge Version",
+      "type": "string"
+    },
+    "latency_ms": {
+      "additionalProperties": {
+        "type": "number"
+      },
+      "title": "Latency Ms",
+      "type": "object"
+    },
+    "measured_at": {
+      "title": "Measured At",
+      "type": "string"
+    },
+    "measurement_scope": {
+      "title": "Measurement Scope",
+      "type": "string"
+    },
+    "memory": {
+      "additionalProperties": {
+        "anyOf": [
+          {
+            "type": "integer"
+          },
+          {
+            "type": "string"
+          }
+        ]
+      },
+      "title": "Memory",
+      "type": "object"
+    },
+    "options": {
+      "$ref": "#/$defs/BenchmarkOptions"
+    },
+    "requested_provider": {
+      "title": "Requested Provider",
+      "type": "string"
+    },
+    "runtime": {
+      "title": "Runtime",
+      "type": "string"
+    },
+    "runtime_version": {
+      "title": "Runtime Version",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": 1,
+      "title": "Schema Version",
+      "type": "integer"
+    },
+    "storage": {
+      "additionalProperties": {
+        "type": "integer"
+      },
+      "title": "Storage",
+      "type": "object"
+    },
+    "threads": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Threads"
+    }
+  },
+  "required": [
+    "edgeforge_version",
+    "bundle_sha256",
+    "measured_at",
+    "runtime",
+    "runtime_version",
+    "requested_provider",
+    "active_providers",
+    "threads",
+    "options",
+    "cases",
+    "latency_ms",
+    "memory",
+    "storage",
+    "agreement",
+    "device",
+    "measurement_scope"
+  ],
+  "title": "BenchmarkReport",
+  "type": "object"
+}
