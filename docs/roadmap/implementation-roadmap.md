@@ -73,3 +73,9 @@ The next five planned tasks are tracked in `docs/next-milestone.md`.
 Implemented the saved handoff. Decision: `docs/architecture/decisions/0010-comparison-bundles.md`.
 Workflow and limitations: `docs/comparison-bundles.md`. Verification: `docs/governance/comparison-bundles-validation.md`.
 The next five planned tasks are tracked in `docs/next-milestone.md`.
+
+## EF-013: Source checked bundle review (2026-11-13)
+
+Implemented the saved handoff. Decision: `docs/architecture/decisions/0011-source-checked-bundle-review.md`.
+Workflow and limitations: `docs/source-checked-bundle-review.md`. Verification: `docs/governance/source-checked-bundle-review-validation.md`.
+The next five planned tasks are tracked in `docs/next-milestone.md`.
