@@ -86,3 +86,5 @@ See [Comparison html verification](docs/comparison-html-verification.md) for the
 See [Comparison bundles](docs/comparison-bundles.md) for the retained evidence workflow.
 
 See [Source checked bundle review](docs/source-checked-bundle-review.md) for the portable review workflow.
+
+[Bundle identity verification](docs/bundle-identity-verification.md) documents the new portable review commands and limits.

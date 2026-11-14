@@ -79,3 +79,8 @@ The next five planned tasks are tracked in `docs/next-milestone.md`.
 Implemented the saved handoff. Decision: `docs/architecture/decisions/0011-source-checked-bundle-review.md`.
 Workflow and limitations: `docs/source-checked-bundle-review.md`. Verification: `docs/governance/source-checked-bundle-review-validation.md`.
 The next five planned tasks are tracked in `docs/next-milestone.md`.
+
+## EF-014: Bundle identity verification (2026-11-15)
+
+Implemented the accepted decision in `docs/architecture/decisions/0012-bundle-identity-verification.md`. Evidence: `docs/governance/bundle-identity-verification-validation.md`.
+The next five tasks are tracked in `docs/next-milestone.md`.
