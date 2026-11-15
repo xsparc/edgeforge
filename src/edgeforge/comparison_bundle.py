@@ -101,3 +101,36 @@ def render_bundle(bundle: ComparisonBundle, format: str = "html") -> bytes:
     if len(raw) > MAX_COMPARISON_BYTES:
         raise EdgeForgeError("rendered comparison exceeds byte limit")
     return raw
+
+
+IDENTITY_ENCODING = "edgeforge-comparison-bundle-json-v1"
+
+
+def bundle_identity(bundle: ComparisonBundle) -> dict:
+    import hashlib
+
+    raw = encode_bundle(bundle)
+    return {
+        "schema_version": 1,
+        "encoding": IDENTITY_ENCODING,
+        "bundle_sha256": hashlib.sha256(raw).hexdigest(),
+        "bytes": len(raw),
+        "interpretation": "normalized_bundle_identity_not_attestation",
+    }
+
+
+def verify_identity(bundle: ComparisonBundle, expected: str) -> None:
+    import hmac
+    import re
+
+    if not isinstance(expected, str) or re.fullmatch(r"[0-9a-f]{64}", expected) is None:
+        raise EdgeForgeError("invalid expected bundle digest")
+    if not hmac.compare_digest(bundle_identity(bundle)["bundle_sha256"], expected):
+        raise EdgeForgeError("bundle identity differs")
+
+
+def verify_export(bundle: ComparisonBundle, raw: bytes, format: str) -> None:
+    if len(raw) > MAX_COMPARISON_BYTES:
+        raise EdgeForgeError("export exceeds byte limit")
+    if raw != render_bundle(bundle, format):
+        raise EdgeForgeError("export differs from canonical rendering")

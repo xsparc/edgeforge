@@ -361,3 +361,31 @@ roadmap_refs = ["docs/roadmap/implementation-roadmap.md"]
 approval_ref = "conversation:2026-11-13-next-autonomous-milestone-and-draft-prs"
 acceptance_refs = ["docs/architecture/decisions/0011-source-checked-bundle-review.md"]
 evidence_refs = ["tests/test_bundle_review.py", "docs/governance/source-checked-bundle-review-validation.md"]
+
+[[research_decisions]]
+id = "RD-BUNDLE-IDENTITY-VERIFICATION"
+disposition = "adopted"
+source_refs = ["docs/research/2026-11-15-bundle-identity-verification.md"]
+design_refs = ["docs/architecture/decisions/0012-bundle-identity-verification.md"]
+
+[[requirements]]
+id = "REQ-BUNDLE-IDENTITY-VERIFICATION"
+statement = "Bundle identity verification with bounded validation and explicit retained-evidence semantics."
+status = "implemented"
+objective_ids = ["OBJ-PORTABLE-INFERENCE"]
+roadmap_refs = ["docs/roadmap/implementation-roadmap.md"]
+design_refs = ["docs/architecture/decisions/0012-bundle-identity-verification.md"]
+risk_refs = ["docs/bundle-identity-verification.md"]
+implementation_refs = ["src/edgeforge/comparison_bundle.py", "src/edgeforge/cli.py"]
+verification_refs = ["tests/test_bundle_identity_export.py"]
+validation_refs = ["docs/governance/bundle-identity-verification-validation.md"]
+
+[[work_items]]
+id = "EF-014-BUNDLE-IDENTITY-VERIFICATION"
+title = "Bundle identity verification"
+status = "verified"
+requirement_ids = ["REQ-BUNDLE-IDENTITY-VERIFICATION"]
+roadmap_refs = ["docs/roadmap/implementation-roadmap.md"]
+approval_ref = "conversation:2026-11-15-next-autonomous-milestone-and-draft-prs"
+acceptance_refs = ["docs/architecture/decisions/0012-bundle-identity-verification.md"]
+evidence_refs = ["tests/test_bundle_identity_export.py", "docs/governance/bundle-identity-verification-validation.md"]
