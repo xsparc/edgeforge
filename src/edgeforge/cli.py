@@ -33,6 +33,10 @@ def parser() -> argparse.ArgumentParser:
         "comparison-bundle-identity", help="Print normalized bundle identity"
     )
     bundle_identity.add_argument("bundle", type=Path)
+    bundle_identity.add_argument("--output", type=Path)
+    commands.add_parser(
+        "comparison-bundle-identity-schema", help="Print the retained bundle identity schema"
+    )
     bundle_export_check = commands.add_parser(
         "comparison-bundle-verify-export", help="Verify exact HTML or CSV"
     )
@@ -40,7 +44,9 @@ def parser() -> argparse.ArgumentParser:
     bundle_export_check.add_argument("export", type=Path)
     bundle_export_check.add_argument("--format", choices=["html", "csv"], required=True)
     for command in (bundle_check, bundle_render, bundle_export_check):
-        command.add_argument("--expected-sha256")
+        gate = command.add_mutually_exclusive_group()
+        gate.add_argument("--expected-sha256")
+        gate.add_argument("--identity", type=Path)
         command.add_argument("--before", type=Path)
         command.add_argument("--after", type=Path)
     build = commands.add_parser("pack", help="Build a reproducible deployment bundle")
@@ -241,8 +247,19 @@ def main() -> int:
             "comparison-bundle-schema",
             "comparison-bundle-render",
             "comparison-bundle-identity",
+            "comparison-bundle-identity-schema",
             "comparison-bundle-verify-export",
         }:
+            from .bundle_identity import (
+                MAX_IDENTITY_BYTES,
+                BundleIdentity,
+                read_identity,
+                verify_identity_record,
+            )
+
+            if args.command == "comparison-bundle-identity-schema":
+                print(json.dumps(BundleIdentity.model_json_schema(), indent=2))
+                return 0
             from .comparison_bundle import (
                 MAX_COMPARISON_BUNDLE_BYTES,
                 ComparisonBundle,
@@ -272,10 +289,21 @@ def main() -> int:
                 raw = read_bounded(args.bundle, MAX_COMPARISON_BUNDLE_BYTES)
                 bundle = read_bundle(raw)
                 if args.command == "comparison-bundle-identity":
-                    print(json.dumps(bundle_identity(bundle)))
+                    record = bundle_identity(bundle)
+                    if args.output is None:
+                        print(json.dumps(record))
+                    else:
+                        encoded = (json.dumps(record, indent=2) + "\n").encode("utf-8")
+                        read_identity(encoded)
+                        with args.output.open("xb") as stream:
+                            stream.write(encoded)
                     return 0
                 if args.expected_sha256 is not None:
                     verify_identity(bundle, args.expected_sha256)
+                if args.identity is not None:
+                    verify_identity_record(
+                        bundle, read_identity(read_bounded(args.identity, MAX_IDENTITY_BYTES))
+                    )
                 if (args.before is None) != (args.after is None):
                     raise EdgeForgeError("both source reports are required")
                 if args.before is not None:

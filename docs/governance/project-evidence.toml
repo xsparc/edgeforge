@@ -389,3 +389,31 @@ roadmap_refs = ["docs/roadmap/implementation-roadmap.md"]
 approval_ref = "conversation:2026-11-15-next-autonomous-milestone-and-draft-prs"
 acceptance_refs = ["docs/architecture/decisions/0012-bundle-identity-verification.md"]
 evidence_refs = ["tests/test_bundle_identity_export.py", "docs/governance/bundle-identity-verification-validation.md"]
+
+[[research_decisions]]
+id = "RD-RETAINED-BUNDLE-IDENTITY"
+disposition = "adopted"
+source_refs = ["docs/research/2026-11-15-retained-bundle-identity.md"]
+design_refs = ["docs/architecture/decisions/0013-retained-bundle-identity.md"]
+
+[[requirements]]
+id = "REQ-RETAINED-BUNDLE-IDENTITY"
+statement = "Retained bundle identity with bounded validation and explicit retained-evidence semantics."
+status = "implemented"
+objective_ids = ["OBJ-PORTABLE-INFERENCE"]
+roadmap_refs = ["docs/roadmap/implementation-roadmap.md"]
+design_refs = ["docs/architecture/decisions/0013-retained-bundle-identity.md"]
+risk_refs = ["docs/retained-bundle-identity.md"]
+implementation_refs = ["src/edgeforge/bundle_identity.py", "src/edgeforge/cli.py", "schemas/comparison-bundle-identity.schema.json", "examples/bundle_review.py"]
+verification_refs = ["tests/test_bundle_identity_record.py", "tests/test_bundle_identity_export.py"]
+validation_refs = ["docs/governance/retained-bundle-identity-validation.md"]
+
+[[work_items]]
+id = "EF-015-RETAINED-BUNDLE-IDENTITY"
+title = "Retained bundle identity"
+status = "verified"
+requirement_ids = ["REQ-RETAINED-BUNDLE-IDENTITY"]
+roadmap_refs = ["docs/roadmap/implementation-roadmap.md"]
+approval_ref = "conversation:2026-11-15-next-autonomous-milestone-and-draft-prs"
+acceptance_refs = ["docs/architecture/decisions/0013-retained-bundle-identity.md"]
+evidence_refs = ["tests/test_bundle_identity_record.py", "tests/test_bundle_identity_export.py", "docs/governance/retained-bundle-identity-validation.md"]
