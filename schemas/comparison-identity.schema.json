@@ -1,0 +1,42 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "bytes": {
+      "maximum": 524288,
+      "minimum": 1,
+      "title": "Bytes",
+      "type": "integer"
+    },
+    "canonicalization": {
+      "const": "edgeforge-comparison-json-v1",
+      "title": "Canonicalization",
+      "type": "string"
+    },
+    "comparison_sha256": {
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Comparison Sha256",
+      "type": "string"
+    },
+    "interpretation": {
+      "const": "retained_identity_not_attestation",
+      "title": "Interpretation",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": 1,
+      "title": "Schema Version",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "schema_version",
+    "canonicalization",
+    "comparison_sha256",
+    "bytes",
+    "interpretation"
+  ],
+  "title": "ComparisonIdentity",
+  "type": "object"
+}

@@ -23,3 +23,9 @@ hardware attestation. Runtime errors use fixed categories at public boundaries.
 
 For vulnerabilities, use GitHub private vulnerability reporting if available;
 avoid posting credentials, private models, or sensitive traces in public issues.
+
+The ONNX extra requires ONNX 1.22 or newer to exclude the versions affected by
+CVE-2026-115919 through CVE-2026-115922. The reproducible ONNX/API environment
+pins ONNX 1.23.2. See the [dependency correction evidence](governance/2026-11-02-dependency-validation.md)
+for advisory sources and validation scope. This minimum does not change the
+trusted-model boundary or certify dependencies against every vulnerability.

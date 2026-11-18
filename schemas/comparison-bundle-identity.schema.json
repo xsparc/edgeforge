@@ -1,0 +1,42 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": 1,
+      "title": "Schema Version",
+      "type": "integer"
+    },
+    "encoding": {
+      "const": "edgeforge-comparison-bundle-json-v1",
+      "title": "Encoding",
+      "type": "string"
+    },
+    "bundle_sha256": {
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Bundle Sha256",
+      "type": "string"
+    },
+    "bytes": {
+      "maximum": 1052672,
+      "minimum": 1,
+      "title": "Bytes",
+      "type": "integer"
+    },
+    "interpretation": {
+      "const": "normalized_bundle_identity_not_attestation",
+      "title": "Interpretation",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "encoding",
+    "bundle_sha256",
+    "bytes",
+    "interpretation"
+  ],
+  "title": "BundleIdentity",
+  "type": "object"
+}

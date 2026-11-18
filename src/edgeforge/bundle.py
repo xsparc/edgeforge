@@ -49,6 +49,7 @@ def load_vectors(data: bytes, config: ModelConfig) -> dict[str, np.ndarray]:
                 len(entries) != len(expected)
                 or {i.filename for i in entries} != {f"{k}.npy" for k in expected}
                 or sum(i.file_size for i in entries) > MAX_VECTOR_BYTES
+                or any(i.flag_bits & 1 for i in entries)
             ):
                 raise EdgeForgeError("invalid or oversized vector archive")
             # Validate headers before NumPy can allocate using an attacker-controlled shape.
@@ -88,7 +89,16 @@ def load_vectors(data: bytes, config: ModelConfig) -> dict[str, np.ndarray]:
         if len(cases) != 1 or not 1 <= next(iter(cases)) <= 1024:
             raise EdgeForgeError("vectors require 1 to 1024 matching cases")
         return vectors
-    except (ValueError, KeyError, OSError, zipfile.BadZipFile, EOFError) as exc:
+    except (
+        ValueError,
+        KeyError,
+        OSError,
+        zipfile.BadZipFile,
+        EOFError,
+        RuntimeError,
+        NotImplementedError,
+        OverflowError,
+    ) as exc:
         raise EdgeForgeError("invalid test vectors; expected finite numeric NPZ arrays") from exc
 
 
@@ -169,5 +179,7 @@ def unpack(data: bytes) -> Bundle:
         OSError,
         zipfile.BadZipFile,
         RuntimeError,
+        NotImplementedError,
+        OverflowError,
     ) as exc:
         raise EdgeForgeError("invalid bundle or failed integrity check") from exc
