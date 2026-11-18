@@ -90,6 +90,12 @@ def run(directory: Path):
     with patch("edgeforge.benchmark.create_adapter", side_effect=RuntimeError("inference invoked")):
         require(cli(["comparison-bundle", left, right, "--output", bundle]) == 0)
         require(cli(["comparison-bundle-identity", bundle, "--output", identity]) == 0)
+        require(cli(["comparison-bundle-identity-check", identity]) == 0)
+        malformed = directory / "malformed-identity.json"
+        malformed.write_bytes(b'{"schema_version":1,"schema_version":1}')
+        malformed_bytes = malformed.read_bytes()
+        require(cli(["comparison-bundle-identity-check", malformed]) == 2)
+        require(malformed.read_bytes() == malformed_bytes)
         saved = {p: p.read_bytes() for p in (left, right, bundle, identity)}
         require(cli(["comparison-bundle-identity", bundle, "--output", identity]) == 2)
         require(cli(["comparison-bundle-verify", bundle, "--identity", identity]) == 0)

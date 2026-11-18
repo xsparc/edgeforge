@@ -417,3 +417,31 @@ roadmap_refs = ["docs/roadmap/implementation-roadmap.md"]
 approval_ref = "conversation:2026-11-15-next-autonomous-milestone-and-draft-prs"
 acceptance_refs = ["docs/architecture/decisions/0013-retained-bundle-identity.md"]
 evidence_refs = ["tests/test_bundle_identity_record.py", "tests/test_bundle_identity_export.py", "docs/governance/retained-bundle-identity-validation.md"]
+
+[[research_decisions]]
+id = "RD-BUNDLE-VERIFICATION-SCOPE"
+disposition = "adopted"
+source_refs = ["docs/research/2026-11-18-bundle-verification-scope.md"]
+design_refs = ["docs/architecture/decisions/0014-bundle-verification-scope.md"]
+
+[[requirements]]
+id = "REQ-BUNDLE-VERIFICATION-SCOPE"
+statement = "Bundle verification scope with bounded validation and explicit evidence semantics."
+status = "implemented"
+objective_ids = ["OBJ-PORTABLE-INFERENCE"]
+roadmap_refs = ["docs/roadmap/implementation-roadmap.md"]
+design_refs = ["docs/architecture/decisions/0014-bundle-verification-scope.md"]
+risk_refs = ["docs/bundle-verification-scope.md"]
+implementation_refs = ["src/edgeforge/cli.py", "examples/bundle_review.py"]
+verification_refs = ["tests/test_verification_scope.py", "tests/test_bundle_identity_record.py"]
+validation_refs = ["docs/governance/bundle-verification-scope-validation.md"]
+
+[[work_items]]
+id = "EF-016-BUNDLE-VERIFICATION-SCOPE"
+title = "Bundle verification scope"
+status = "verified"
+requirement_ids = ["REQ-BUNDLE-VERIFICATION-SCOPE"]
+roadmap_refs = ["docs/roadmap/implementation-roadmap.md"]
+approval_ref = "conversation:2026-11-18-next-autonomous-milestone-and-draft-prs"
+acceptance_refs = ["docs/architecture/decisions/0014-bundle-verification-scope.md"]
+evidence_refs = ["tests/test_verification_scope.py", "tests/test_bundle_identity_record.py", "docs/governance/bundle-verification-scope-validation.md"]
