@@ -90,3 +90,5 @@ See [Source checked bundle review](docs/source-checked-bundle-review.md) for the
 [Bundle identity verification](docs/bundle-identity-verification.md) documents the new portable review commands and limits.
 
 [Retained bundle identity](docs/retained-bundle-identity.md) documents the portable review commands and their limits.
+
+[Bundle verification scope](docs/bundle-verification-scope.md) documents the new behavior and limits.

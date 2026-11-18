@@ -34,6 +34,11 @@ def parser() -> argparse.ArgumentParser:
     )
     bundle_identity.add_argument("bundle", type=Path)
     bundle_identity.add_argument("--output", type=Path)
+    identity_check = commands.add_parser(
+        "comparison-bundle-identity-check",
+        help="Validate an identity record without matching a bundle",
+    )
+    identity_check.add_argument("identity", type=Path)
     commands.add_parser(
         "comparison-bundle-identity-schema", help="Print the retained bundle identity schema"
     )
@@ -248,6 +253,7 @@ def main() -> int:
             "comparison-bundle-render",
             "comparison-bundle-identity",
             "comparison-bundle-identity-schema",
+            "comparison-bundle-identity-check",
             "comparison-bundle-verify-export",
         }:
             from .bundle_identity import (
@@ -257,6 +263,18 @@ def main() -> int:
                 verify_identity_record,
             )
 
+            if args.command == "comparison-bundle-identity-check":
+                read_identity(read_bounded(args.identity, MAX_IDENTITY_BYTES))
+                print(
+                    json.dumps(
+                        {
+                            "schema_version": 1,
+                            "valid": True,
+                            "interpretation": "identity_record_validity_only",
+                        }
+                    )
+                )
+                return 0
             if args.command == "comparison-bundle-identity-schema":
                 print(json.dumps(BundleIdentity.model_json_schema(), indent=2))
                 return 0
@@ -328,6 +346,9 @@ def main() -> int:
                         {
                             "schema_version": 1,
                             "verified": True,
+                            "source_checked": args.before is not None,
+                            "identity_checked": args.identity is not None
+                            or args.expected_sha256 is not None,
                             "interpretation": "local_source_consistency_only",
                         }
                     )

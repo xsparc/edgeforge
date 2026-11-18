@@ -89,3 +89,8 @@ The next five tasks are tracked in `docs/next-milestone.md`.
 
 Implemented `docs/architecture/decisions/0013-retained-bundle-identity.md`. Workflow: `docs/retained-bundle-identity.md`.
 Verification: `docs/governance/retained-bundle-identity-validation.md`. Next five tasks: `docs/next-milestone.md`.
+
+## EF-016: Bundle verification scope (2026-11-18)
+
+Implemented `docs/architecture/decisions/0014-bundle-verification-scope.md`. Workflow: `docs/bundle-verification-scope.md`.
+Evidence: `docs/governance/bundle-verification-scope-validation.md`. Next five tasks: `docs/next-milestone.md`.
