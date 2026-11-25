@@ -1,0 +1,40 @@
+schema_version = 1
+project = "edgeforge"
+research_decisions = []
+
+[authority]
+source_priority = ["docs/architecture/overview.md", "docs/roadmap/implementation-roadmap.md", "docs/architecture/decisions/", "code-and-tests", "supporting-documentation"]
+dhf_is_authoritative = false
+
+[review]
+last_reviewed = "2026-10-28"
+review_due = "2026-11-28"
+
+[[objectives]]
+id = "OBJ-PORTABLE-INFERENCE"
+statement = "Produce portable edge model bundles and reproducible, scoped measurements."
+status = "active"
+source_refs = ["docs/architecture/overview.md"]
+validation_refs = ["docs/governance/validation.md"]
+
+[[requirements]]
+id = "REQ-PORTABLE-BUNDLES"
+statement = "Validate and transport models, vectors, and runtime configuration reproducibly."
+status = "implemented"
+objective_ids = ["OBJ-PORTABLE-INFERENCE"]
+roadmap_refs = ["docs/roadmap/implementation-roadmap.md"]
+design_refs = ["docs/architecture/decisions/0001-runtime-adapters.md"]
+implementation_refs = ["src/edgeforge/bundle.py", "src/edgeforge/contracts.py", "src/edgeforge/cli.py"]
+verification_refs = ["tests/test_bundles.py"]
+validation_refs = ["docs/governance/validation.md"]
+risk_refs = ["docs/security.md"]
+
+[[work_items]]
+id = "EF-001"
+title = "Portable bundle contracts and CLI"
+status = "verified"
+requirement_ids = ["REQ-PORTABLE-BUNDLES"]
+roadmap_refs = ["docs/roadmap/implementation-roadmap.md"]
+approval_ref = "conversation:2026-10-28-edgeforge-three-pr-mvp"
+acceptance_refs = ["docs/governance/validation.md"]
+evidence_refs = ["tests/test_bundles.py"]

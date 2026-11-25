@@ -1,0 +1,38 @@
+[build-system]
+requires = ["hatchling>=1.27,<2"]
+build-backend = "hatchling.build"
+
+[project]
+name = "edgeforge-toolkit"
+version = "0.1.0"
+description = "Portable edge AI bundles and reproducible runtime benchmarks"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+dependencies = ["numpy>=1.26,<3", "pydantic>=2.10,<3", "psutil>=6,<8"]
+
+[project.optional-dependencies]
+onnx = ["onnx>=1.17,<2", "onnxruntime>=1.20,<2"]
+executorch = ["executorch>=1.0,<2"]
+api = ["fastapi>=0.115,<1", "uvicorn>=0.34,<1"]
+dev = ["pytest>=8,<10", "ruff>=0.9,<1", "build>=1,<2", "httpx>=0.28,<1"]
+
+[project.scripts]
+edgeforge = "edgeforge.cli:main"
+
+[project.urls]
+Repository = "https://github.com/xsparc/edgeforge"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/edgeforge"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
